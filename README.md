@@ -7,20 +7,22 @@
 - **Curso:** Aseguramiento de la Calidad del Software
 - **Versión de Node.js:** v24.18.0
 
-## Descripción
+## Descripción del proyecto
 
-Este proyecto fue desarrollado utilizando Playwright y TypeScript para realizar pruebas automatizadas sobre la página web Demoblaze.
+Este proyecto fue desarrollado utilizando Playwright con TypeScript para realizar pruebas automatizadas sobre la aplicación web Demoblaze.
 
-El objetivo es comprobar que la página cargue correctamente y que algunos de sus elementos principales sean visibles.
+El objetivo del laboratorio es verificar que la página cargue correctamente y que sus elementos principales sean visibles y funcionales.
 
-## Tecnologías utilizadas
+## Herramientas utilizadas
 
-- Node.js
+- Visual Studio Code
+- Node.js v24.18.0
 - npm
 - TypeScript
 - Playwright
-- Visual Studio Code
-- Git y GitHub
+- Chromium
+- Git
+- GitHub
 
 ## Pruebas realizadas
 
@@ -30,9 +32,40 @@ El proyecto contiene tres pruebas automatizadas:
 2. Verificar que el menú de categorías sea visible.
 3. Verificar que la barra de navegación contenga los enlaces principales.
 
-## Ejecutar el proyecto
+## Instalación
 
-Instalar las dependencias:
+Para instalar las dependencias del proyecto:
 
 ```bash
 npm install
+```
+
+Para instalar Chromium:
+
+```bash
+npx playwright install chromium
+```
+
+## Ejecución de las pruebas
+
+Para ejecutar todos los tests:
+
+```bash
+npx playwright test
+```
+
+Para abrir el reporte HTML:
+
+```bash
+npx playwright show-report
+```
+
+## Evidencia de ejecución
+
+La siguiente imagen muestra los tres tests ejecutándose correctamente:
+
+![Tres tests aprobados](./evidencias/tests-pasando.png)
+
+## Resultado
+
+Los tres tests fueron ejecutados correctamente utilizando Playwright y Chromium.
