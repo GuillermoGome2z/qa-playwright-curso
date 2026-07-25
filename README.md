@@ -122,3 +122,29 @@ Playwright implementa `auto-wait` porque las páginas web no siempre cargan todo
 En cambio, `sleep()` utiliza un tiempo fijo. Si se establece una espera demasiado corta, el elemento puede no estar listo y la prueba puede fallar. Si se establece una espera demasiado larga, la prueba perderá tiempo aunque el elemento ya se encuentre disponible.
 
 La principal ventaja del `auto-wait` es que permite crear pruebas más estables, rápidas y confiables. Playwright espera solamente el tiempo necesario y reduce los fallos causados por diferencias en la velocidad de la red, el navegador o la computadora.
+
+## Capturas del Laboratorio 02
+
+### Página principal
+
+![Página principal](./evidencias/01-pagina-inicio.png)
+
+### Carrito vacío
+
+![Carrito vacío](./evidencias/02-carrito-vacio.png)
+
+### Detalle del producto
+
+![Detalle del producto](./evidencias/03-detalle-producto.png)
+
+### Barra de navegación
+
+![Navbar](./evidencias/04-navbar.png)
+
+### Pie de página
+
+![Footer](./evidencias/05-footer.png)
+
+### Tests aprobados
+
+![Tests del Laboratorio 02 aprobados](./evidencias/06-tests-clase02-pasando.png) 
