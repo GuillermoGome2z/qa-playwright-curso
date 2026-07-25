@@ -66,6 +66,10 @@ La siguiente imagen muestra los tres tests ejecutándose correctamente:
 
 ![Tres tests aprobados](./evidencias/tests-pasando.png)
 
+### Reporte de Playwright
+
+![Reporte de Playwright](./evidencias/reporte-playwright.png)
+
 ## Resultado
 
 Los tres tests fueron ejecutados correctamente utilizando Playwright y Chromium.
