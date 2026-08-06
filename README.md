@@ -9,11 +9,11 @@
 
 ## Descripción del proyecto
 
-Este proyecto fue desarrollado utilizando Playwright con TypeScript para realizar pruebas automatizadas sobre la aplicación web DemoBlaze.
+Este proyecto fue desarrollado con Playwright y TypeScript para automatizar pruebas funcionales sobre la aplicación web DemoBlaze.
 
-El objetivo del proyecto es aplicar diferentes técnicas de automatización de pruebas, incluyendo validación de elementos, navegación, capturas de evidencias, esperas automáticas y utilización de diferentes tipos de locators.
+El objetivo principal es aplicar buenas prácticas de aseguramiento de calidad, incluyendo validación de elementos, navegación, capturas de evidencia, esperas automáticas, localizadores semánticos y flujo funcional de usuario.
 
-A lo largo de los laboratorios se han desarrollado diferentes casos de prueba que permiten comprobar el comportamiento y los elementos principales de la aplicación.
+A lo largo de los laboratorios se documentaron y ejecutaron casos que permiten verificar el comportamiento de la aplicación de forma automatizada.
 
 ## Herramientas utilizadas
 
@@ -32,11 +32,9 @@ A lo largo de los laboratorios se han desarrollado diferentes casos de prueba qu
 
 ## Descripción
 
-En este laboratorio se realizaron las primeras pruebas automatizadas utilizando Playwright sobre la aplicación web DemoBlaze.
+En este laboratorio se realizaron las primeras pruebas automatizadas sobre DemoBlaze para verificar la carga de la página y la visibilidad de los elementos principales del menú.
 
 ## Pruebas realizadas
-
-Se desarrollaron tres pruebas automatizadas:
 
 1. Verificar que la página de DemoBlaze cargue correctamente.
 2. Verificar que el menú de categorías sea visible.
@@ -44,45 +42,27 @@ Se desarrollaron tres pruebas automatizadas:
 
 ## Instalación
 
-Para instalar las dependencias del proyecto:
-
 ```bash
 npm install
-```
-
-Para instalar Chromium:
-
-```bash
 npx playwright install chromium
 ```
 
 ## Ejecución de las pruebas
 
-Para ejecutar todos los tests:
-
 ```bash
 npx playwright test
-```
-
-Para abrir el reporte HTML:
-
-```bash
 npx playwright show-report
 ```
 
 ## Evidencia de ejecución
 
-La siguiente imagen muestra los tres tests ejecutándose correctamente:
+![Tres tests aprobados](./evidencias/clase01/resultado-general/tests-pasando.png)
 
-![Tres tests aprobados](./evidencias/tests-pasando.png)
-
-### Reporte de Playwright
-
-![Reporte de Playwright](./evidencias/reporte-playwright.png)
+![Reporte de Playwright](./evidencias/clase01/resultado-general/reporte-playwright.png)
 
 ## Resultado
 
-Los tres tests correspondientes al primer laboratorio fueron ejecutados correctamente utilizando Playwright y Chromium.
+Los tres tests correspondientes al primer laboratorio fueron ejecutados correctamente.
 
 ---
 
@@ -90,9 +70,7 @@ Los tres tests correspondientes al primer laboratorio fueron ejecutados correcta
 
 ## Descripción
 
-En este laboratorio se realizaron pruebas automatizadas sobre la aplicación web DemoBlaze utilizando Playwright y TypeScript.
-
-Las pruebas permiten navegar entre diferentes páginas, esperar la carga de elementos, capturar evidencias y medir el tiempo de carga de la página principal.
+En este laboratorio se realizaron pruebas para validar la navegación entre páginas, la carga de recursos y la captura de evidencias visuales de la aplicación.
 
 ## Pruebas realizadas
 
@@ -103,67 +81,38 @@ Las pruebas permiten navegar entre diferentes páginas, esperar la carga de elem
 
 ## Evidencias generadas
 
-Durante la ejecución se generaron cinco capturas de pantalla:
-
-- `01-pagina-inicio.png`
-- `02-carrito-vacio.png`
-- `03-detalle-producto.png`
-- `04-navbar.png`
-- `05-footer.png`
-
-## Preguntas de reflexión
-
-### 1. ¿Cuántas capturas se generaron?
-
-Se generaron cinco capturas. Dos corresponden a la navegación entre la página principal y el carrito, una corresponde al detalle de un producto y dos capturan por separado el navbar y el footer.
-
-### 2. ¿Qué diferencia existe entre `fullPage: true` y una captura normal?
-
-La opción `fullPage: true` captura toda la página web, incluyendo el contenido que se encuentra fuera del área visible y que normalmente requiere desplazamiento.
-
-Una captura normal de la página registra únicamente el área visible del navegador. Cuando se utiliza `locator.screenshot()`, Playwright captura únicamente el elemento seleccionado, como el navbar o el footer.
-
-### 3. ¿Por qué es importante capturar evidencias en las pruebas de software?
-
-Las evidencias permiten demostrar que las pruebas fueron ejecutadas y documentar el estado de la aplicación durante la evaluación.
-
-También ayudan a identificar errores, comparar resultados y facilitar la revisión del trabajo realizado.
-
-## Reflexión sobre auto-wait y sleep()
-
-Playwright implementa `auto-wait` porque las páginas web no siempre cargan todos sus elementos inmediatamente.
-
-Antes de realizar una acción, Playwright espera automáticamente que el elemento esté visible, estable, habilitado y disponible para recibir la interacción.
-
-En cambio, `sleep()` utiliza un tiempo fijo. Si se establece una espera demasiado corta, el elemento puede no estar listo y la prueba puede fallar. Si se establece una espera demasiado larga, la prueba perderá tiempo aunque el elemento ya se encuentre disponible.
-
-La principal ventaja del `auto-wait` es que permite crear pruebas más estables, rápidas y confiables. Playwright espera solamente el tiempo necesario y reduce los fallos causados por diferencias en la velocidad de la red, el navegador o la computadora.
+- Página principal
+- Carrito vacío
+- Detalle del producto
+- Barra de navegación
+- Pie de página
+- Resultado general de la clase
 
 ## Capturas del Laboratorio 02
 
 ### Página principal
 
-![Página principal](./evidencias/01-pagina-inicio.png)
+![Página principal](./evidencias/clase02/test01/01-pagina-inicio.png)
 
 ### Carrito vacío
 
-![Carrito vacío](./evidencias/02-carrito-vacio.png)
+![Carrito vacío](./evidencias/clase02/test01/02-carrito-vacio.png)
 
 ### Detalle del producto
 
-![Detalle del producto](./evidencias/03-detalle-producto.png)
+![Detalle del producto](./evidencias/clase02/test02/03-detalle-producto.png)
 
 ### Barra de navegación
 
-![Navbar](./evidencias/04-navbar.png)
+![Navbar](./evidencias/clase02/test03/04-navbar.png)
 
 ### Pie de página
 
-![Footer](./evidencias/05-footer.png)
+![Footer](./evidencias/clase02/test03/05-footer.png)
 
 ### Tests aprobados
 
-![Tests del Laboratorio 02 aprobados](./evidencias/06-tests-clase02-pasando.png)
+![Tests del Laboratorio 02 aprobados](./evidencias/clase02/resultado-general/06-tests-clase02-pasando.png)
 
 ---
 
@@ -171,13 +120,11 @@ La principal ventaja del `auto-wait` es que permite crear pruebas más estables,
 
 ## Descripción
 
-En esta práctica se utilizaron diferentes tipos de locators de Playwright sobre la aplicación DemoBlaze.
-
-El objetivo fue identificar elementos utilizando técnicas recomendadas por Playwright, así como practicar selectores CSS, atributos, locators encadenados, negaciones y técnicas adicionales mediante los retos propuestos.
+En esta práctica se utilizaron diferentes tipos de locators de Playwright sobre DemoBlaze para identificar elementos mediante técnicas recomendadas, incluyendo selectores CSS, atributos, locators encadenados y filtros.
 
 ## Pruebas realizadas
 
-Se desarrollaron un total de **9 pruebas**, correspondientes a los 6 ejercicios de clase y los 3 retos solicitados.
+Se desarrollaron un total de 9 pruebas, correspondientes a 6 ejercicios de clase y 3 retos adicionales.
 
 1. Locator por texto.
 2. Locator por CSS.
@@ -185,101 +132,64 @@ Se desarrollaron un total de **9 pruebas**, correspondientes a los 6 ejercicios 
 4. Locator por atributo.
 5. Locators encadenados.
 6. Negación de elementos.
-7. Reto 1: Locator por rol utilizando `getByRole()`.
-8. Reto 2: Locator utilizando `filter()`.
+7. Reto 1: Locator por rol utilizando getByRole().
+8. Reto 2: Locator utilizando filter().
 9. Reto 3: Locator mediante selector de atributo parcial.
-
-## Retos realizados
-
-### Reto 1 - Locator por rol
-
-Se verificó la existencia y visibilidad del botón **Place Order** dentro del carrito utilizando:
-
-```typescript
-page.getByRole('button', { name: 'Place Order' })
-```
-
-### Reto 2 - Locator con filter()
-
-Se localizó específicamente el producto **Samsung galaxy s6** entre las tarjetas disponibles utilizando `filter()`.
-
-Además, se obtuvo el precio del producto, obteniendo como resultado:
-
-```text
-Precio de Samsung galaxy s6: $360
-```
-
-### Reto 3 - Locator por atributo parcial
-
-Se verificaron las tres categorías principales del sidebar:
-
-- Phones
-- Laptops
-- Monitors
-
-Para ello se utilizó un selector basado en un atributo compartido por los enlaces de categoría.
 
 ## Ejecución de los tests de Clase 03
 
-Para ejecutar únicamente las pruebas correspondientes al Laboratorio 03:
-
 ```bash
 npx playwright test tests/clase03.spec.ts
-```
-
-Para ejecutar las pruebas mostrando el navegador:
-
-```bash
 npx playwright test tests/clase03.spec.ts --headed
-```
-
-Para mostrar el reporte HTML generado por Playwright:
-
-```bash
 npx playwright show-report
 ```
 
 ## Resultado de ejecución
 
-Los 9 casos de prueba fueron ejecutados correctamente.
-
-- **Pruebas aprobadas:** 9
-- **Pruebas fallidas:** 0
-- **Pruebas omitidas:** 0
+- Pruebas aprobadas: 9
+- Pruebas fallidas: 0
+- Pruebas omitidas: 0
 
 ## Evidencias de ejecución
 
-### Pruebas aprobadas
+![Clase 03 - 9 pruebas aprobadas](./evidencias/clase03/resultado-general/07-tests-clase03-9-passed.png)
 
-La siguiente captura muestra la ejecución de los 9 tests desde la terminal de Visual Studio Code.
-
-![Clase 03 - 9 pruebas aprobadas](./evidencias/07-tests-clase03-9-passed.png)
-
-### Reporte HTML de Playwright
-
-La siguiente evidencia muestra el reporte generado por Playwright, donde se observa que los 9 casos fueron aprobados correctamente.
-
-![Clase 03 - Reporte Playwright](./evidencias/08-reporte-clase03.png)
+![Clase 03 - Reporte Playwright](./evidencias/clase03/resultado-general/08-reporte-clase03.png)
 
 ## Caso de prueba TC-001
 
-Como parte del entregable se documentó el caso de prueba funcional:
-
-**TC-001 - Agregar un producto al carrito**
-
-El caso verifica que un producto pueda ser seleccionado, agregado al carrito y posteriormente encontrado dentro de la lista de productos del carrito.
-
-El documento se encuentra disponible en:
+El documento del caso de prueba funcional se encuentra disponible en:
 
 [Ver TC-001 - Agregar al carrito](./casos-de-prueba/TC-001.md)
 
-## Aplicación utilizada
+---
 
-Las pruebas fueron realizadas sobre la aplicación:
+# Laboratorio 04 - Actions y flujo funcional en Playwright
 
-**DemoBlaze**
+## Descripción
 
-https://www.demoblaze.com/
+En este laboratorio se trabajó con acciones de usuario sobre la aplicación DemoBlaze, incluyendo registro, login, navegación al carrito, uso de fill(), clear(), click(), manejo de dialogs y verificación de formularios.
+
+## Pruebas realizadas
+
+1. Registrar un nuevo usuario.
+2. Login con el usuario registrado.
+3. Login -> agregar producto -> verificar carrito.
+4. Login con credenciales incorrectas.
+5. Reto 1 - Formulario Place Order utilizando fill().
+6. Reto 2 - Cerrar modal utilizando Close y .last().
+7. Reto 3 - Utilizar clear() y verificar con inputValue().
+
+## Resultado
+
+- Pruebas aprobadas: 7
+- Pruebas fallidas: 0
+
+## Ejecución
+
+```bash
+npx playwright test tests/clase04.spec.ts
+```
 
 ---
 
@@ -292,21 +202,43 @@ QA-PLAYWRIGHT-CURSO
 │   └── TC-001.md
 │
 ├── evidencias
-│   ├── 01-pagina-inicio.png
-│   ├── 02-carrito-vacio.png
-│   ├── 03-detalle-producto.png
-│   ├── 04-navbar.png
-│   ├── 05-footer.png
-│   ├── 06-tests-clase02-pasando.png
-│   ├── 07-tests-clase03-9-passed.png
-│   ├── 08-reporte-clase03.png
-│   ├── reporte-playwright.png
-│   └── tests-pasando.png
+│   ├── clase01
+│   │   └── resultado-general
+│   │       ├── reporte-playwright.png
+│   │       └── tests-pasando.png
+│   ├── clase02
+│   │   ├── resultado-general
+│   │   │   └── 06-tests-clase02-pasando.png
+│   │   ├── test01
+│   │   │   ├── 01-pagina-inicio.png
+│   │   │   └── 02-carrito-vacio.png
+│   │   ├── test02
+│   │   │   └── 03-detalle-producto.png
+│   │   └── test03
+│   │       ├── 04-navbar.png
+│   │       └── 05-footer.png
+│   ├── clase03
+│   │   └── resultado-general
+│   │       ├── 07-tests-clase03-9-passed.png
+│   │       └── 08-reporte-clase03.png
+│   └── clase04
+│       ├── test01-registro
+│       ├── test02-login
+│       ├── test03-carrito
+│       ├── test04-login-incorrecto
+│       ├── test05-reto1
+│       ├── test06-reto2
+│       ├── test07-reto3
+│       └── resultado-general
+│
+├── tareas
+│   └── tarea-04.md
 │
 ├── tests
 │   ├── clase01.spec.ts
 │   ├── clase02.spec.ts
-│   └── clase03.spec.ts
+│   ├── clase03.spec.ts
+│   └── clase04.spec.ts
 │
 ├── .gitignore
 ├── .npmrc
@@ -321,33 +253,10 @@ QA-PLAYWRIGHT-CURSO
 
 # Ejecución general del proyecto
 
-Para instalar las dependencias:
-
 ```bash
 npm install
-```
-
-Para instalar Chromium:
-
-```bash
 npx playwright install chromium
-```
-
-Para ejecutar todas las pruebas:
-
-```bash
 npx playwright test
-```
-
-Para ejecutar una clase específica:
-
-```bash
-npx playwright test tests/clase03.spec.ts
-```
-
-Para visualizar el reporte HTML:
-
-```bash
 npx playwright show-report
 ```
 
@@ -357,6 +266,4 @@ npx playwright show-report
 
 Los laboratorios realizados permitieron aplicar diferentes funcionalidades de Playwright para la automatización de pruebas sobre DemoBlaze.
 
-Se trabajó con validación de elementos, navegación, capturas de evidencia, esperas automáticas, localizadores semánticos, selectores CSS, identificadores, atributos, locators encadenados y filtros.
-
-En el Laboratorio 03 se completaron satisfactoriamente los **6 ejercicios de clase y los 3 retos adicionales**, obteniendo un resultado final de **9 pruebas aprobadas y 0 fallidas**.
+Se trabajó con validación de elementos, navegación, capturas de evidencia, esperas automáticas, localizadores semánticos, selectores CSS, identificadores, atributos, locators encadenados, filtros y flujos funcionales de usuario.

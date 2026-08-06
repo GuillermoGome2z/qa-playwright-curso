@@ -1,10 +1,14 @@
 import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+
+const evidenciaClase03 = (subdir: string, nombre: string) => {
+  const ruta = `./evidencias/clase03/${subdir}`;
+  fs.mkdirSync(ruta, { recursive: true });
+  return `${ruta}/${nombre}`;
+};
 
 test.describe('Clase 03 - Locators en DemoBlaze', () => {
 
-  // =========================================================
-  // TEST 1: Locator por texto
-  // =========================================================
   test('Locator por texto: verificar elementos del menú', async ({ page }) => {
     await page.goto('/');
 
@@ -17,12 +21,13 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
     await expect(
       nav.getByText('Cart', { exact: true })
     ).toBeVisible();
+
+    await page.screenshot({
+      path: evidenciaClase03('test01', '01-menu-navegacion.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // TEST 2: Locator por CSS
-  // =========================================================
   test('Locator por CSS: productos en la página principal', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.card-title');
@@ -36,12 +41,13 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
     const nombreProducto = await primerProducto.textContent();
 
     expect(nombreProducto).not.toBeNull();
+
+    await page.screenshot({
+      path: evidenciaClase03('test02', '02-productos-principal.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // TEST 3: Locator por ID
-  // =========================================================
   test('Locator por ID: campos del modal de login', async ({ page }) => {
     await page.goto('/');
 
@@ -56,12 +62,13 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
 
     await expect(page.locator('#loginusername')).toBeVisible();
     await expect(page.locator('#loginpassword')).toBeVisible();
+
+    await page.screenshot({
+      path: evidenciaClase03('test03', '03-modal-login.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // TEST 4: Locator por atributo
-  // =========================================================
   test('Locator por atributo: imagen del primer producto', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.card-title');
@@ -77,12 +84,13 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
     const srcImagen = await imagenProducto.getAttribute('src');
 
     expect(srcImagen).not.toBeNull();
+
+    await page.screenshot({
+      path: evidenciaClase03('test04', '04-imagen-producto.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // TEST 5: Locators encadenados
-  // =========================================================
   test('Locators encadenados: precio dentro de una tarjeta', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.card-title');
@@ -92,50 +100,45 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
     const precio = primeraTarjeta.locator('h5');
 
     await expect(precio).toBeVisible();
+
+    await page.screenshot({
+      path: evidenciaClase03('test05', '05-precio-tarjeta.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // TEST 6: Negación
-  // =========================================================
   test('Verificar que NO existe un elemento (negación)', async ({ page }) => {
     await page.goto('/');
 
     const mensajeVacio = page.getByText('No products found');
 
     await expect(mensajeVacio).not.toBeVisible();
+
+    await page.screenshot({
+      path: evidenciaClase03('test06', '06-negacion-elemento.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // RETO 1: Locator por rol
-  // =========================================================
   test('Reto 1: verificar botón Place Order con getByRole', async ({ page }) => {
-
-    // Abrir directamente el carrito
     await page.goto('/cart.html');
 
-    // Buscar el botón por su rol y nombre
     const botonPlaceOrder = page.getByRole('button', {
       name: 'Place Order'
     });
 
-    // Verificar que esté visible
     await expect(botonPlaceOrder).toBeVisible();
+
+    await page.screenshot({
+      path: evidenciaClase03('test07-reto1', '07-reto1-place-order.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // RETO 2: Locator con filter()
-  // =========================================================
   test('Reto 2: encontrar producto con filter y leer su precio', async ({ page }) => {
-
     await page.goto('/');
-
-    // Esperar a que carguen los productos
     await page.waitForSelector('.card');
 
-    // Buscar la tarjeta que contiene Samsung galaxy s6
     const producto = page
       .locator('.card')
       .filter({ hasText: 'Samsung galaxy s6' })
@@ -143,37 +146,37 @@ test.describe('Clase 03 - Locators en DemoBlaze', () => {
 
     await expect(producto).toBeVisible();
 
-    // Buscar el precio solamente dentro de esa tarjeta
     const precio = producto.locator('h5');
 
     await expect(precio).toBeVisible();
 
-    // Leer el precio
     const precioTexto = await precio.textContent();
 
     expect(precioTexto).not.toBeNull();
 
     console.log('Precio de Samsung galaxy s6:', precioTexto);
+
+    await page.screenshot({
+      path: evidenciaClase03('test08-reto2', '08-reto2-producto-samsung.png'),
+      fullPage: true,
+    });
   });
 
-
-  // =========================================================
-  // RETO 3: Locator por atributo parcial
-  // =========================================================
   test('Reto 3: verificar categorías con selector por atributo', async ({ page }) => {
-
     await page.goto('/');
 
-    // Las categorías utilizan el atributo onclick con byCat(...)
     const categorias = page.locator('a[onclick^="byCat("]');
 
-    // Deben existir exactamente 3 categorías
     await expect(categorias).toHaveCount(3);
 
-    // Verificar sus nombres
     await expect(categorias.nth(0)).toHaveText('Phones');
     await expect(categorias.nth(1)).toHaveText('Laptops');
     await expect(categorias.nth(2)).toHaveText('Monitors');
+
+    await page.screenshot({
+      path: evidenciaClase03('test09-reto3', '09-reto3-categorias.png'),
+      fullPage: true,
+    });
   });
 
 });

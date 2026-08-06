@@ -1,0 +1,5 @@
+## Tarea 04 - Principios fundamentales del testing
+
+Uno de los principios fundamentales del testing que considero más importante es el principio 3: “Las pruebas tempranas ahorran tiempo y dinero”. Detectar errores en etapas iniciales del desarrollo permite corregirlos cuando su impacto es aún menor, lo que reduce costos y evita que un problema pequeño se convierta en un fallo complejo más adelante. Además, al identificar defectos desde el inicio, el equipo puede ahorrar tiempo en retrabajos y mantener un ritmo de desarrollo más eficiente.
+
+Este principio también mejora la calidad del software porque los errores se detectan antes de que pasen a etapas más avanzadas, como la integración o la producción. Cuando las fallas se encuentran temprano, es más fácil entender su origen, corregirlas con menos riesgo y evitar que se propaguen a otras funciones del sistema. En un contexto universitario y profesional, aplicar pruebas tempranas favorece la confiabilidad del producto y disminuye los problemas que pueden afectar la experiencia del usuario final.

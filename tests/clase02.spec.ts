@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 
-// Crear la carpeta de evidencias si todavía no existe
-test.beforeAll(() => {
-  fs.mkdirSync('./evidencias', { recursive: true });
-});
+const evidenciaClase02 = (subdir: string, nombre: string) => {
+  const ruta = `./evidencias/clase02/${subdir}`;
+  fs.mkdirSync(ruta, { recursive: true });
+  return `${ruta}/${nombre}`;
+};
 
 test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
   test('Navegar al carrito y regresar al inicio', async ({ page }) => {
@@ -13,7 +14,7 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
     await expect(page).toHaveURL(/demoblaze/);
 
     await page.screenshot({
-      path: './evidencias/01-pagina-inicio.png',
+      path: evidenciaClase02('test01', '01-pagina-inicio.png'),
       fullPage: true,
     });
 
@@ -23,7 +24,7 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
     await expect(page).toHaveURL(/cart/);
 
     await page.screenshot({
-      path: './evidencias/02-carrito-vacio.png',
+      path: evidenciaClase02('test01', '02-carrito-vacio.png'),
       fullPage: true,
     });
 
@@ -41,7 +42,6 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
 
     await page.getByText('Phones', { exact: true }).click();
 
-    // Esperar a que aparezcan los productos
     await page.waitForSelector('.card-title a');
 
     const productos = page.locator('.card-title a');
@@ -54,7 +54,7 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
     await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({
-      path: './evidencias/03-detalle-producto.png',
+      path: evidenciaClase02('test02', '03-detalle-producto.png'),
       fullPage: true,
     });
 
@@ -71,20 +71,16 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
     await expect(navbar).toBeVisible();
 
     await navbar.screenshot({
-      path: './evidencias/04-navbar.png',
+      path: evidenciaClase02('test03', '04-navbar.png'),
     });
 
-    /*
-     * DemoBlaze identifica su pie de página con #footc.
-     * Se desplaza hasta el elemento antes de tomar la captura.
-     */
     const footer = page.locator('#footc');
 
     await footer.scrollIntoViewIfNeeded();
     await expect(footer).toBeVisible();
 
     await footer.screenshot({
-      path: './evidencias/05-footer.png',
+      path: evidenciaClase02('test03', '05-footer.png'),
     });
   });
 
@@ -98,7 +94,11 @@ test.describe('Clase 02 - Navegación y esperas en DemoBlaze', () => {
 
     console.log(`Tiempo de carga: ${loadTime}ms`);
 
-    // La página debería cargar en menos de 10 segundos
     expect(loadTime).toBeLessThan(10000);
+
+    await page.screenshot({
+      path: evidenciaClase02('test04', '06-tiempo-carga.png'),
+      fullPage: true,
+    });
   });
 });
