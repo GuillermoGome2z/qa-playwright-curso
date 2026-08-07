@@ -1,248 +1,228 @@
-# Proyecto de pruebas automatizadas con Playwright
+﻿# QA Automation · Playwright
 
-## Datos del estudiante
+<div align="center">
 
-- **Nombre:** Guillermo Jose Gomez Aguilera
-- **Carné:** 1790-22-16429
-- **Curso:** Aseguramiento de la Calidad del Software
-- **Versión de Node.js:** v24.18.0
+Automatización de pruebas funcionales sobre DemoBlaze utilizando Playwright + TypeScript.
 
-## Descripción del proyecto
+Universidad Mariano Gálvez de Guatemala<br>
+Curso: Aseguramiento de la Calidad del Software<br>
+Estudiante: Guillermo Jose Gomez Aguilera<br>
+Carné: 1790-22-16429
 
-Este proyecto fue desarrollado con Playwright y TypeScript para automatizar pruebas funcionales sobre la aplicación web DemoBlaze.
+</div>
 
-El objetivo principal es aplicar buenas prácticas de aseguramiento de calidad, incluyendo validación de elementos, navegación, capturas de evidencia, esperas automáticas, localizadores semánticos y flujo funcional de usuario.
+<div align="center">
 
-A lo largo de los laboratorios se documentaron y ejecutaron casos que permiten verificar el comportamiento de la aplicación de forma automatizada.
+[![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
+[![Tests](https://img.shields.io/badge/Tests-23%20passed-success)](#estado-de-los-laboratorios)
+[![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
-## Herramientas utilizadas
-
-- Visual Studio Code
-- Node.js v24.18.0
-- npm
-- TypeScript
-- Playwright
-- Chromium
-- Git
-- GitHub
+</div>
 
 ---
 
-# Laboratorio 01 - Introducción a Playwright
+## Sobre el proyecto
 
-## Descripción
+Este repositorio reúne los laboratorios desarrollados durante el curso de Aseguramiento de la Calidad del Software, con un enfoque práctico en automatización de pruebas funcionales sobre la aplicación DemoBlaze.
 
-En este laboratorio se realizaron las primeras pruebas automatizadas sobre DemoBlaze para verificar la carga de la página y la visibilidad de los elementos principales del menú.
+Se trabajaron conceptos y técnicas reales de QA, incluyendo navegación, validación de elementos, locators, assertions, actions, manejo de dialogs, capturas de evidencia y flujos end-to-end, todo implementado con Playwright y TypeScript.
 
-## Pruebas realizadas
+---
 
-1. Verificar que la página de DemoBlaze cargue correctamente.
-2. Verificar que el menú de categorías sea visible.
-3. Verificar que la barra de navegación contenga los enlaces principales.
+## Estado de los laboratorios
 
-## Instalación
+| Laboratorio | Tema | Tests | Estado |
+|---|---|---:|---|
+| Clase 01 | Introducción a Playwright | 3 | ✅ Completado |
+| Clase 02 | Navegación, esperas y capturas | 4 | ✅ Completado |
+| Clase 03 | Locators en Playwright | 9 | ✅ Completado |
+| Clase 04 | Actions y flujo funcional | 7 | ✅ Completado |
+| **Total** |  | **23** | **✅ Completado** |
+
+---
+
+## Navegación
+
+- [Sobre el proyecto](#sobre-el-proyecto)
+- [Tecnologías](#tecnologías-y-herramientas)
+- [Laboratorio 01](#laboratorio-01--introducción-a-playwright)
+- [Laboratorio 02](#laboratorio-02--navegación-esperas-y-capturas)
+- [Laboratorio 03](#laboratorio-03--locators-en-playwright)
+- [Laboratorio 04](#laboratorio-04--actions-y-flujo-funcional-en-playwright)
+- [Evidencias](#evidencias-destacadas)
+- [Estructura del proyecto](#estructura-del-proyecto)
+- [Ejecución](#ejecución)
+- [Documentación adicional](#documentación-adicional)
+
+---
+
+## Tecnologías y herramientas
+
+| Tecnología | Uso |
+|---|---|
+| Playwright | Automatización de pruebas end-to-end |
+| TypeScript | Desarrollo de los tests |
+| Node.js | Entorno de ejecución |
+| Chromium | Navegador utilizado para las pruebas |
+| Git | Control de versiones |
+| GitHub | Repositorio y documentación |
+
+---
+
+## Laboratorio 01 · Introducción a Playwright
+
+> Objetivo: validar la carga inicial de la aplicación y la visibilidad de los elementos principales del menú.
+
+### Qué se trabajó
+
+Se realizaron pruebas iniciales sobre la carga de la página, la visibilidad del menú de categorías y la presencia de los enlaces principales de navegación.
+
+### Pruebas implementadas
+
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | Página carga correctamente | ✅ |
+| 2 | Menú de categorías visible | ✅ |
+| 3 | Navbar contiene enlaces principales | ✅ |
+
+### Ejecutar laboratorio
 
 ```bash
-npm install
-npx playwright install chromium
+npx playwright test tests/clase01.spec.ts
 ```
 
-## Ejecución de las pruebas
+### Evidencias
+
+![Evidencia Clase 01](./evidencias/clase01/test01/01-pagina-cargada.png)
+
+---
+
+## Laboratorio 02 · Navegación, esperas y capturas
+
+> Objetivo: comprobar la navegación entre páginas, la carga de contenido y la generación de capturas de evidencia.
+
+### Qué se trabajó
+
+Se validaron flujos de navegación, esperas automáticas, acceso al carrito, detalle de producto y captura de elementos como el navbar y el footer.
+
+### Pruebas implementadas
+
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | Navegar al carrito y regresar | ✅ |
+| 2 | Abrir detalle de un producto | ✅ |
+| 3 | Capturar navbar y footer | ✅ |
+| 4 | Verificar tiempo de carga | ✅ |
+
+### Ejecutar laboratorio
 
 ```bash
-npx playwright test
-npx playwright show-report
+npx playwright test tests/clase02.spec.ts
 ```
 
-## Evidencia de ejecución
+### Evidencias
 
-![Tres tests aprobados](./evidencias/clase01/resultado-general/tests-pasando.png)
-
-![Reporte de Playwright](./evidencias/clase01/resultado-general/reporte-playwright.png)
-
-## Resultado
-
-Los tres tests correspondientes al primer laboratorio fueron ejecutados correctamente.
+![Evidencia Clase 02](./evidencias/clase02/test01/01-pagina-inicio.png)
 
 ---
 
-# Laboratorio 02 - Navegación, esperas y capturas
+## Laboratorio 03 · Locators en Playwright
 
-## Descripción
+> Objetivo: practicar diferentes técnicas de localización de elementos en la interfaz de DemoBlaze.
 
-En este laboratorio se realizaron pruebas para validar la navegación entre páginas, la carga de recursos y la captura de evidencias visuales de la aplicación.
+### Qué se trabajó
 
-## Pruebas realizadas
+Se implementaron pruebas con locators por texto, CSS, ID, atributos, encadenados, negación y retos adicionales con getByRole y filter.
 
-1. Navegar desde la página principal hacia el carrito y regresar.
-2. Seleccionar la categoría Phones y abrir el detalle de un producto.
-3. Capturar por separado la barra de navegación y el pie de página.
-4. Verificar que la página principal cargue en menos de 10 segundos.
+### Pruebas implementadas
 
-## Evidencias generadas
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | Locator por texto | ✅ |
+| 2 | Locator por CSS | ✅ |
+| 3 | Locator por ID | ✅ |
+| 4 | Locator por atributo | ✅ |
+| 5 | Locators encadenados | ✅ |
+| 6 | Negación de elementos | ✅ |
+| 7 | Reto 1: Place Order con getByRole | ✅ |
+| 8 | Reto 2: producto con filter | ✅ |
+| 9 | Reto 3: selector por atributo parcial | ✅ |
 
-- Página principal
-- Carrito vacío
-- Detalle del producto
-- Barra de navegación
-- Pie de página
-- Resultado general de la clase
-
-## Capturas del Laboratorio 02
-
-### Página principal
-
-![Página principal](./evidencias/clase02/test01/01-pagina-inicio.png)
-
-### Carrito vacío
-
-![Carrito vacío](./evidencias/clase02/test01/02-carrito-vacio.png)
-
-### Detalle del producto
-
-![Detalle del producto](./evidencias/clase02/test02/03-detalle-producto.png)
-
-### Barra de navegación
-
-![Navbar](./evidencias/clase02/test03/04-navbar.png)
-
-### Pie de página
-
-![Footer](./evidencias/clase02/test03/05-footer.png)
-
-### Tests aprobados
-
-![Tests del Laboratorio 02 aprobados](./evidencias/clase02/resultado-general/06-tests-clase02-pasando.png)
-
----
-
-# Laboratorio 03 - Locators en Playwright
-
-## Descripción
-
-En esta práctica se utilizaron diferentes tipos de locators de Playwright sobre DemoBlaze para identificar elementos mediante técnicas recomendadas, incluyendo selectores CSS, atributos, locators encadenados y filtros.
-
-## Pruebas realizadas
-
-Se desarrollaron un total de 9 pruebas, correspondientes a 6 ejercicios de clase y 3 retos adicionales.
-
-1. Locator por texto.
-2. Locator por CSS.
-3. Locator por ID.
-4. Locator por atributo.
-5. Locators encadenados.
-6. Negación de elementos.
-7. Reto 1: Locator por rol utilizando getByRole().
-8. Reto 2: Locator utilizando filter().
-9. Reto 3: Locator mediante selector de atributo parcial.
-
-## Ejecución de los tests de Clase 03
+### Ejecutar laboratorio
 
 ```bash
 npx playwright test tests/clase03.spec.ts
-npx playwright test tests/clase03.spec.ts --headed
-npx playwright show-report
 ```
 
-## Resultado de ejecución
+### Evidencias
 
-- Pruebas aprobadas: 9
-- Pruebas fallidas: 0
-- Pruebas omitidas: 0
-
-## Evidencias de ejecución
-
-![Clase 03 - 9 pruebas aprobadas](./evidencias/clase03/resultado-general/07-tests-clase03-9-passed.png)
-
-![Clase 03 - Reporte Playwright](./evidencias/clase03/resultado-general/08-reporte-clase03.png)
-
-## Caso de prueba TC-001
-
-El documento del caso de prueba funcional se encuentra disponible en:
-
-[Ver TC-001 - Agregar al carrito](./casos-de-prueba/TC-001.md)
+![Evidencia Clase 03](./evidencias/clase03/test01/01-menu-navegacion.png)
 
 ---
 
-# Laboratorio 04 - Actions y flujo funcional en Playwright
+## Laboratorio 04 · Actions y flujo funcional en Playwright
 
-## Descripción
+> Objetivo: validar flujos funcionales reales de usuario con registro, login, carrito y formularios interactivos.
 
-En este laboratorio se trabajó con acciones de usuario sobre la aplicación DemoBlaze, incluyendo registro, login, navegación al carrito, uso de fill(), clear(), click(), manejo de dialogs y verificación de formularios.
+### Qué se trabajó
 
-## Pruebas realizadas
+Se automatizaron acciones como registro, login, agregado de producto, manejo de dialogs, uso de fill(), clear(), click() y verificación de formularios como Place Order.
 
-1. Registrar un nuevo usuario.
-2. Login con el usuario registrado.
-3. Login -> agregar producto -> verificar carrito.
-4. Login con credenciales incorrectas.
-5. Reto 1 - Formulario Place Order utilizando fill().
-6. Reto 2 - Cerrar modal utilizando Close y .last().
-7. Reto 3 - Utilizar clear() y verificar con inputValue().
+### Pruebas implementadas
 
-## Resultado
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | Registrar un nuevo usuario | ✅ |
+| 2 | Login con usuario registrado | ✅ |
+| 3 | Flujo login → carrito | ✅ |
+| 4 | Login con credenciales incorrectas | ✅ |
+| 5 | Reto 1: formulario Place Order | ✅ |
+| 6 | Reto 2: cerrar modal con Close y .last() | ✅ |
+| 7 | Reto 3: clear() y inputValue() | ✅ |
 
-- Pruebas aprobadas: 7
-- Pruebas fallidas: 0
-
-## Ejecución
+### Ejecutar laboratorio
 
 ```bash
 npx playwright test tests/clase04.spec.ts
 ```
 
+### Evidencias
+
+![Evidencia Clase 04](./evidencias/clase04/test03-carrito/carrito-con-producto.png)
+
 ---
 
-# Estructura principal del proyecto
+## Evidencias destacadas
+
+La organización de capturas se realizó de forma estructurada por clase y por prueba, conservando las evidencias generadas durante la ejecución de cada laboratorio.
+
+- [Evidencias Clase 01](./evidencias/clase01)
+- [Evidencias Clase 02](./evidencias/clase02)
+- [Evidencias Clase 03](./evidencias/clase03)
+- [Evidencias Clase 04](./evidencias/clase04)
+
+---
+
+## Estructura del proyecto
 
 ```text
 QA-PLAYWRIGHT-CURSO
-│
-├── casos-de-prueba
+├── casos-de-prueba/
 │   └── TC-001.md
-│
-├── evidencias
-│   ├── clase01
-│   │   └── resultado-general
-│   │       ├── reporte-playwright.png
-│   │       └── tests-pasando.png
-│   ├── clase02
-│   │   ├── resultado-general
-│   │   │   └── 06-tests-clase02-pasando.png
-│   │   ├── test01
-│   │   │   ├── 01-pagina-inicio.png
-│   │   │   └── 02-carrito-vacio.png
-│   │   ├── test02
-│   │   │   └── 03-detalle-producto.png
-│   │   └── test03
-│   │       ├── 04-navbar.png
-│   │       └── 05-footer.png
-│   ├── clase03
-│   │   └── resultado-general
-│   │       ├── 07-tests-clase03-9-passed.png
-│   │       └── 08-reporte-clase03.png
-│   └── clase04
-│       ├── test01-registro
-│       ├── test02-login
-│       ├── test03-carrito
-│       ├── test04-login-incorrecto
-│       ├── test05-reto1
-│       ├── test06-reto2
-│       ├── test07-reto3
-│       └── resultado-general
-│
-├── tareas
+├── evidencias/
+│   ├── clase01/
+│   ├── clase02/
+│   ├── clase03/
+│   └── clase04/
+├── tareas/
 │   └── tarea-04.md
-│
-├── tests
+├── tests/
 │   ├── clase01.spec.ts
 │   ├── clase02.spec.ts
 │   ├── clase03.spec.ts
 │   └── clase04.spec.ts
-│
-├── .gitignore
-├── .npmrc
-├── package-lock.json
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -251,19 +231,36 @@ QA-PLAYWRIGHT-CURSO
 
 ---
 
-# Ejecución general del proyecto
+## Ejecución
+
+### Instalación
 
 ```bash
 npm install
 npx playwright install chromium
+```
+
+### Ejecutar todas las pruebas
+
+```bash
 npx playwright test
+```
+
+### Abrir reporte HTML
+
+```bash
 npx playwright show-report
 ```
 
 ---
 
-# Conclusión
+## Documentación adicional
 
-Los laboratorios realizados permitieron aplicar diferentes funcionalidades de Playwright para la automatización de pruebas sobre DemoBlaze.
+- [Caso de prueba TC-001](./casos-de-prueba/TC-001.md)
+- [Tarea 04](./tareas/tarea-04.md)
 
-Se trabajó con validación de elementos, navegación, capturas de evidencia, esperas automáticas, localizadores semánticos, selectores CSS, identificadores, atributos, locators encadenados, filtros y flujos funcionales de usuario.
+---
+
+## Conclusión
+
+Este proyecto demuestra la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, favoreciendo la trazabilidad, la documentación y la validación funcional de una aplicación web real como DemoBlaze.
