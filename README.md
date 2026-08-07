@@ -25,13 +25,15 @@ Carné: 1790-22-16429
 
 ## Sobre el proyecto
 
-Este repositorio reúne los laboratorios desarrollados durante el curso de Aseguramiento de la Calidad del Software, con un enfoque práctico en automatización de pruebas funcionales sobre la aplicación DemoBlaze.
+Este repositorio presenta el desarrollo de un conjunto de laboratorios de automatización de pruebas realizado durante el curso de Aseguramiento de la Calidad del Software. El proyecto se enfoca en la validación funcional de la aplicación web DemoBlaze mediante herramientas modernas de testing automatizado.
 
-Se trabajaron conceptos y técnicas reales de QA, incluyendo navegación, validación de elementos, locators, assertions, actions, manejo de dialogs, capturas de evidencia y flujos end-to-end, todo implementado con Playwright y TypeScript.
+A lo largo del trabajo se implementaron pruebas end-to-end que cubren aspectos como navegación, validación de interfaces, selección de elementos, acciones de usuario, manejo de diálogos, capturas de evidencia y ejecución de flujos reales de interacción con la aplicación.
 
 ---
 
 ## Estado de los laboratorios
+
+La siguiente tabla resume el alcance de los laboratorios implementados y su estado final de ejecución.
 
 | Laboratorio | Tema | Tests | Estado |
 |---|---|---:|---|
@@ -60,6 +62,8 @@ Se trabajaron conceptos y técnicas reales de QA, incluyendo navegación, valida
 
 ## Tecnologías y herramientas
 
+El proyecto fue desarrollado con un conjunto de herramientas orientadas a la automatización de pruebas funcionales y a la documentación técnica del proceso.
+
 | Tecnología | Uso |
 |---|---|
 | Playwright | Automatización de pruebas end-to-end |
@@ -75,9 +79,9 @@ Se trabajaron conceptos y técnicas reales de QA, incluyendo navegación, valida
 
 > Objetivo: validar la carga inicial de la aplicación y la visibilidad de los elementos principales del menú.
 
-### Qué se trabajó
+### Desarrollo del laboratorio
 
-Se realizaron pruebas iniciales sobre la carga de la página, la visibilidad del menú de categorías y la presencia de los enlaces principales de navegación.
+En este laboratorio se realizaron las primeras pruebas automatizadas sobre la interfaz de DemoBlaze, con el fin de verificar la carga correcta de la página principal y la disponibilidad de los elementos básicos de navegación.
 
 ### Pruebas implementadas
 
@@ -103,9 +107,9 @@ npx playwright test tests/clase01.spec.ts
 
 > Objetivo: comprobar la navegación entre páginas, la carga de contenido y la generación de capturas de evidencia.
 
-### Qué se trabajó
+### Desarrollo del laboratorio
 
-Se validaron flujos de navegación, esperas automáticas, acceso al carrito, detalle de producto y captura de elementos como el navbar y el footer.
+Este laboratorio permitió validar la interacción del usuario con distintos elementos de la aplicación, incluyendo el recorrido hacia el carrito, la apertura del detalle de un producto y la captura visual de componentes clave de la interfaz.
 
 ### Pruebas implementadas
 
@@ -132,9 +136,9 @@ npx playwright test tests/clase02.spec.ts
 
 > Objetivo: practicar diferentes técnicas de localización de elementos en la interfaz de DemoBlaze.
 
-### Qué se trabajó
+### Desarrollo del laboratorio
 
-Se implementaron pruebas con locators por texto, CSS, ID, atributos, encadenados, negación y retos adicionales con getByRole y filter.
+En este laboratorio se exploraron distintos tipos de locators y estrategias de selección de elementos, con el propósito de fortalecer la precisión y estabilidad de las pruebas automatizadas.
 
 ### Pruebas implementadas
 
@@ -166,9 +170,9 @@ npx playwright test tests/clase03.spec.ts
 
 > Objetivo: validar flujos funcionales reales de usuario con registro, login, carrito y formularios interactivos.
 
-### Qué se trabajó
+### Desarrollo del laboratorio
 
-Se automatizaron acciones como registro, login, agregado de producto, manejo de dialogs, uso de fill(), clear(), click() y verificación de formularios como Place Order.
+Este laboratorio integró acciones de usuario reales sobre la aplicación, incluyendo registro, autenticación, navegación al carrito y el uso de formularios interactivos para validar comportamientos funcionales completos.
 
 ### Pruebas implementadas
 
@@ -196,7 +200,7 @@ npx playwright test tests/clase04.spec.ts
 
 ## Evidencias destacadas
 
-La organización de capturas se realizó de forma estructurada por clase y por prueba, conservando las evidencias generadas durante la ejecución de cada laboratorio.
+La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
 
 - [Evidencias Clase 01](./evidencias/clase01)
 - [Evidencias Clase 02](./evidencias/clase02)
@@ -263,4 +267,4 @@ npx playwright show-report
 
 ## Conclusión
 
-Este proyecto demuestra la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, favoreciendo la trazabilidad, la documentación y la validación funcional de una aplicación web real como DemoBlaze.
+Este proyecto evidencia la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, fortaleciendo la trazabilidad, la documentación y la validación funcional de una aplicación web real como DemoBlaze.
