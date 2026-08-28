@@ -16,7 +16,7 @@ Carné: 1790-22-16429
 [![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-23%20passed-success)](#estado-de-los-laboratorios)
+[![Tests](https://img.shields.io/badge/Tests-31%20passed-success)](#estado-de-los-laboratorios)
 [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
 </div>
@@ -41,7 +41,8 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 | Clase 02 | Navegación, esperas y capturas | 4 | ✅ Completado |
 | Clase 03 | Locators en Playwright | 9 | ✅ Completado |
 | Clase 04 | Actions y flujo funcional | 7 | ✅ Completado |
-| **Total** |  | **23** | **✅ Completado** |
+| Clase 06 | Page Object Model (POM) | 8 | ✅ Completado |
+| **Total** |  | **31** | **✅ Completado** |
 
 ---
 
@@ -53,6 +54,7 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Laboratorio 02](#laboratorio-02--navegación-esperas-y-capturas)
 - [Laboratorio 03](#laboratorio-03--locators-en-playwright)
 - [Laboratorio 04](#laboratorio-04--actions-y-flujo-funcional-en-playwright)
+- [Laboratorio 06](#laboratorio-06--page-object-model-pom-en-sauce-demo)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -464,6 +466,148 @@ npx playwright test tests/clase04.spec.ts
 
 ---
 
+## Laboratorio 06 · Page Object Model (POM) en Sauce Demo
+
+> Objetivo: implementar el patrón Page Object Model (POM) en Playwright para organizar las pruebas de forma mantenible y escalable, extendiendo la automatización a nuevos flujos de Sauce Demo.
+
+### Desarrollo del laboratorio
+
+En este laboratorio se reorganizaron las pruebas automatizadas mediante el patrón Page Object Model (POM), separando los selectores y las acciones de cada página de la lógica principal de los tests.
+
+Se implementaron los Page Objects base `LoginPage`, `InventoryPage` y `CartPage`. Como parte de los retos de la Clase 06 se agregaron `CheckoutPage` y `MenuPage`, además del método `removeProductByName()` dentro de `InventoryPage`.
+
+Con esta estructura se automatizaron flujos de autenticación, inventario, carrito, ordenamiento de productos, checkout completo, cierre de sesión y eliminación de productos.
+
+### Pruebas implementadas
+
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | Login exitoso con POM | ✅ |
+| 2 | Login fallido con POM | ✅ |
+| 3 | Agregar 2 productos y verificar carrito | ✅ |
+| 4 | Verificar que el inventario tiene 6 productos | ✅ |
+| 5 | Ordenar productos de mayor a menor precio | ✅ |
+| 6 | Reto 1: completar una compra de principio a fin | ✅ |
+| 7 | Reto 2: cerrar sesión desde el menú hamburguesa | ✅ |
+| 8 | Reto 3: quitar producto y verificar que el badge desaparece al llegar a 0 | ✅ |
+
+### Page Objects implementados
+
+```text
+pages/
+├── LoginPage.ts
+├── InventoryPage.ts
+├── CartPage.ts
+├── CheckoutPage.ts
+└── MenuPage.ts
+```
+
+### Ejecutar laboratorio
+
+```bash
+npx playwright test tests/clase06.spec.ts
+```
+
+Para visualizar la ejecución en el navegador:
+
+```bash
+npx playwright test tests/clase06.spec.ts --headed
+```
+
+### Evidencias
+
+<details>
+<summary><strong>📸 Test 1 · Login exitoso con POM</strong></summary>
+
+<br>
+
+![Login exitoso con POM](./evidencias/clase06/test01/01-login-exitoso.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 2 · Login fallido con POM</strong></summary>
+
+<br>
+
+![Login fallido con POM](./evidencias/clase06/test02/02-login-fallido.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 3 · Agregar 2 productos y verificar carrito</strong></summary>
+
+<br>
+
+![Carrito con 2 productos](./evidencias/clase06/test03/03-carrito-2-productos.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 4 · Inventario con 6 productos</strong></summary>
+
+<br>
+
+![Inventario con 6 productos](./evidencias/clase06/test04/04-inventario-6-productos.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 5 · Ordenar productos de mayor a menor precio</strong></summary>
+
+<br>
+
+![Productos ordenados de mayor a menor](./evidencias/clase06/test05/05-orden-mayor-menor.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 6 · Reto 1 - Checkout completo</strong></summary>
+
+<br>
+
+![Checkout completado](./evidencias/clase06/test06/06-checkout-completado.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 7 · Reto 2 - Logout desde menú hamburguesa</strong></summary>
+
+<br>
+
+![Logout exitoso](./evidencias/clase06/test07/07-logout-exitoso.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 8 · Reto 3 - Eliminar producto y verificar badge</strong></summary>
+
+<br>
+
+![Producto eliminado](./evidencias/clase06/test08/08-producto-eliminado.png)
+
+</details>
+
+<details>
+<summary><strong>✅ Resultado general · 8 pruebas aprobadas</strong></summary>
+
+<br>
+
+![Clase 06 - 8 pruebas aprobadas](./evidencias/clase06/resultado-general/09-clase06-8-tests-passed.png)
+
+</details>
+
+<details>
+<summary><strong>📊 Reporte HTML de Playwright · Clase 06</strong></summary>
+
+<br>
+
+![Reporte HTML Playwright Clase 06](./evidencias/clase06/resultado-general/10-reporte-clase06.png)
+
+</details>
+
+---
+
 ## Evidencias destacadas
 
 La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
@@ -472,6 +616,7 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 02](./evidencias/clase02)
 - [Evidencias Clase 03](./evidencias/clase03)
 - [Evidencias Clase 04](./evidencias/clase04)
+- [Evidencias Clase 06](./evidencias/clase06)
 
 ---
 
@@ -485,14 +630,22 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase01/
 │   ├── clase02/
 │   ├── clase03/
-│   └── clase04/
+│   ├── clase04/
+│   └── clase06/
+├── pages/
+│   ├── LoginPage.ts
+│   ├── InventoryPage.ts
+│   ├── CartPage.ts
+│   ├── CheckoutPage.ts
+│   └── MenuPage.ts
 ├── tareas/
 │   └── tarea-04.md
 ├── tests/
 │   ├── clase01.spec.ts
 │   ├── clase02.spec.ts
 │   ├── clase03.spec.ts
-│   └── clase04.spec.ts
+│   ├── clase04.spec.ts
+│   └── clase06.spec.ts
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
