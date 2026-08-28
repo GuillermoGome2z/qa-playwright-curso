@@ -593,7 +593,7 @@ npx playwright test tests/clase06.spec.ts --headed
 
 <br>
 
-![Clase 06 - 8 pruebas aprobadas](./evidencias/clase06/resultado-general/09-clase06-8-tests-passed.png)
+![Clase 06 - 8 pruebas aprobadas](./evidencias/clase06/resultado-general/01-clase06-8-tests-passed.png)
 
 </details>
 
