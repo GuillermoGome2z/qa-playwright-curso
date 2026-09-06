@@ -2,8 +2,6 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class LoginPage {
   readonly page: Page;
-
-  // Locators como propiedades de la clase
   readonly usernameInput: Locator;
   readonly passwordInput: Locator;
   readonly loginButton: Locator;
@@ -18,7 +16,6 @@ export class LoginPage {
     this.errorMessage = page.locator('[data-test="error"]');
   }
 
-  // Métodos como acciones de alto nivel
   async navigate() {
     await this.page.goto('https://www.saucedemo.com');
   }

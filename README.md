@@ -2,7 +2,7 @@
 
 <div align="center">
 
-Automatización de pruebas funcionales sobre DemoBlaze utilizando Playwright + TypeScript.
+Automatización de pruebas funcionales sobre DemoBlaze y Sauce Demo utilizando Playwright + TypeScript.
 
 Universidad Mariano Gálvez de Guatemala<br>
 Curso: Aseguramiento de la Calidad del Software<br>
@@ -16,7 +16,8 @@ Carné: 1790-22-16429
 [![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-31%20passed-success)](#estado-de-los-laboratorios)
+[![Tests](https://img.shields.io/badge/Tests-38%20passed-success)](#estado-de-los-laboratorios)
+[![Defectos](https://img.shields.io/badge/Defectos%20documentados-1-orange)](#reporte-de-defecto--dr-001)
 [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
 </div>
@@ -25,9 +26,11 @@ Carné: 1790-22-16429
 
 ## Sobre el proyecto
 
-Este repositorio presenta el desarrollo de un conjunto de laboratorios de automatización de pruebas realizado durante el curso de Aseguramiento de la Calidad del Software. El proyecto se enfoca en la validación funcional de la aplicación web DemoBlaze mediante herramientas modernas de testing automatizado.
+Este repositorio presenta el desarrollo de un conjunto de laboratorios de automatización de pruebas realizado durante el curso de Aseguramiento de la Calidad del Software. El proyecto se enfoca en la validación funcional de aplicaciones web (DemoBlaze y Sauce Demo) mediante herramientas modernas de testing automatizado.
 
-A lo largo del trabajo se implementaron pruebas funcionales automatizadas y flujos end-to-end que cubren aspectos como navegación, validación de interfaces, selección de elementos, acciones de usuario, manejo de diálogos, capturas de evidencia y ejecución de flujos reales de interacción con la aplicación.
+A lo largo del trabajo se implementaron pruebas funcionales automatizadas y flujos end-to-end que cubren aspectos como navegación, validación de interfaces, selección de elementos, acciones de usuario, manejo de diálogos, el patrón Page Object Model (POM) y generación de evidencia profesional de pruebas (screenshots, videos y trazas).
+
+Desde la Clase 07 el proyecto incorpora, además, la documentación formal de defectos siguiendo la cadena causal **Error → Defecto → Fallo**, y técnicas avanzadas de evidencia como `test.step()`, `testInfo.attach()` y comparación visual con `toHaveScreenshot()`.
 
 ---
 
@@ -42,7 +45,8 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 | Clase 03 | Locators en Playwright | 9 | ✅ Completado |
 | Clase 04 | Actions y flujo funcional | 7 | ✅ Completado |
 | Clase 06 | Page Object Model (POM) | 8 | ✅ Completado |
-| **Total** |  | **31** | **✅ Completado** |
+| Clase 07 | Roles QA + Error/Defecto/Fallo + Evidencias avanzadas | 7 | ✅ Completado |
+| **Total** |  | **38** | **✅ Completado** |
 
 ---
 
@@ -55,6 +59,8 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Laboratorio 03](#laboratorio-03--locators-en-playwright)
 - [Laboratorio 04](#laboratorio-04--actions-y-flujo-funcional-en-playwright)
 - [Laboratorio 06](#laboratorio-06--page-object-model-pom-en-sauce-demo)
+- [Laboratorio 07](#laboratorio-07--roles-qa--error-defecto-y-fallo--evidencias-avanzadas)
+- [Reporte de defecto DR-001](#reporte-de-defecto--dr-001)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -72,6 +78,8 @@ El proyecto fue desarrollado con un conjunto de herramientas orientadas a la aut
 | TypeScript | Desarrollo de los tests |
 | Node.js | Entorno de ejecución |
 | Chromium | Navegador utilizado para las pruebas |
+| Playwright Trace Viewer | Depuración visual paso a paso (timeline, screenshots, red, consola) |
+| ISO/IEC 25010 | Marco de referencia para atributos de calidad del software |
 | Git | Control de versiones |
 | GitHub | Repositorio y documentación |
 
@@ -608,6 +616,152 @@ npx playwright test tests/clase06.spec.ts --headed
 
 ---
 
+## Laboratorio 07 · Roles QA + Error, Defecto y Fallo + Evidencias avanzadas
+
+> Objetivo: distinguir error, defecto y fallo; comprender los atributos de calidad ISO/IEC 25010; y generar evidencia profesional de pruebas con screenshots, videos y trazas (traces).
+
+### Conceptos aplicados
+
+| Concepto | Aplicación en este laboratorio |
+|---|---|
+| **Error** | Se introdujo deliberadamente una aserción incorrecta (`toHaveText('2')`) para simular la causa raíz. |
+| **Defecto** | La línea de código quedó en el test, incorrecta pero sin haberse ejecutado todavía. |
+| **Fallo** | Al ejecutar el test, la aserción falla y Playwright captura la evidencia automáticamente. |
+| **ISO/IEC 25010** | Los tests cubren principalmente *Adecuación funcional*, y apoyan *Usabilidad* y *Fiabilidad* mediante evidencia reproducible. |
+
+El ciclo completo de este razonamiento —y su evidencia— está documentado en **[reportes/DR-001.md](#reporte-de-defecto--dr-001)**.
+
+### Desarrollo del laboratorio
+
+Reutilizando los Page Objects `LoginPage` e `InventoryPage` de la Clase 06, se construyeron 4 tests en `tests/clase07.spec.ts` enfocados en documentar visualmente cada flujo: capturas antes/después del login, el recorrido completo de compra, el momento exacto de un defecto esperado (usuario bloqueado) y una comparación de estados antes/después de una acción.
+
+Como tarea de la clase, se agregaron 3 tests reto en `tests/tarea07.spec.ts` con técnicas de evidencia **no vistas en el laboratorio**: pasos nombrados con `test.step()`, adjuntos de datos con `testInfo.attach()`, y comparación visual contra una imagen baseline con `toHaveScreenshot()`.
+
+Adicionalmente, se activó la configuración completa de evidencias en `playwright.config.ts` (`screenshot: 'on'`, `video: 'on'`, `trace: 'on'`) y el reporter `html`, necesario para inspeccionar todo con `npx playwright show-report`.
+
+### Pruebas implementadas — `tests/clase07.spec.ts`
+
+| # | Prueba | Evidencia generada | Estado |
+|---|---|---|---|
+| 1 | Login exitoso - evidencia completa | Screenshot antes y después del login | ✅ |
+| 2 | Documentar el flujo de compra completo | Screenshots de inventario, producto agregado y carrito | ✅ |
+| 3 | Capturar el momento exacto de un defecto esperado | Screenshot del elemento de error (usuario bloqueado) | ✅ |
+| 4 | Comparar estados antes y después de una acción | Screenshots del badge del carrito antes/después | ✅ |
+
+### Tests reto — `tests/tarea07.spec.ts` (evidencias avanzadas)
+
+| # | Reto | Técnica | Qué demuestra | Estado |
+|---|---|---|---|---|
+| 1 | Login estructurado en pasos | `test.step()` | Cada paso (navegar, login, verificar) aparece por separado en el reporte y el trace | ✅ |
+| 2 | Adjuntar datos capturados | `testInfo.attach()` | Adjunta un `.txt` con cantidad de productos, URL y fecha directo al reporte HTML | ✅ |
+| 3 | Comparación visual del inventario | `toHaveScreenshot()` | Compara pixel a pixel contra un baseline versionado en el repo | ✅ |
+
+> El baseline del Reto 3 vive en [`tests/tarea07.spec.ts-snapshots/inventario-baseline-chromium-win32.png`](./tests/tarea07.spec.ts-snapshots/inventario-baseline-chromium-win32.png) y debe comitearse junto con el test — es la referencia contra la que se compararán las corridas futuras.
+
+### Ejecutar laboratorio
+
+```bash
+# Tests del laboratorio (Clase 07)
+npx playwright test tests/clase07.spec.ts
+
+# Tests reto (Tarea 07)
+npx playwright test tests/tarea07.spec.ts
+
+# Primera vez que corres el Reto 3 en otra máquina: genera el baseline
+npx playwright test tests/tarea07.spec.ts --update-snapshots
+```
+
+### Analizar el reporte y el Trace Viewer
+
+```bash
+npx playwright show-report
+```
+
+Desde el reporte HTML se puede: ver el estado (pass/fail) de cada test, revisar los screenshots automáticos, reproducir el video de la ejecución y abrir el **Trace Viewer** (enlace "Trace" en cada test) para ver, paso a paso, el timeline de acciones, screenshots intermedios, requests de red y logs de consola — la evidencia más completa que genera Playwright.
+
+### Evidencias
+
+<details>
+<summary><strong>📸 Test 1 · Login antes / después</strong></summary>
+
+<br>
+
+![Antes del login](./evidencias/clase07/clase07-antes-login.png)
+
+![Después del login](./evidencias/clase07/clase07-despues-login.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 2 · Flujo de compra completo</strong></summary>
+
+<br>
+
+![Inventario](./evidencias/clase07/t02-inventario.png)
+
+![Producto agregado](./evidencias/clase07/t02-producto-agregado.png)
+
+![Carrito](./evidencias/clase07/t02-carrito.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 3 · Defecto esperado (usuario bloqueado)</strong></summary>
+
+<br>
+
+![Error usuario bloqueado](./evidencias/clase07/t03-error-usuario-bloqueado.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 4 · Estado antes / después del badge</strong></summary>
+
+<br>
+
+![Estado antes](./evidencias/clase07/t04-estado-antes.png)
+
+![Estado después](./evidencias/clase07/t04-estado-despues.png)
+
+</details>
+
+<details>
+<summary><strong>🖼️ Reto 3 · Baseline visual del inventario (toHaveScreenshot)</strong></summary>
+
+<br>
+
+![Baseline inventario](./tests/tarea07.spec.ts-snapshots/inventario-baseline-chromium-win32.png)
+
+</details>
+
+---
+
+## Reporte de defecto · DR-001
+
+Como parte del laboratorio se simuló un defecto real siguiendo el ciclo completo de detección → evidencia → documentación: se forzó un valor incorrecto en una aserción, se ejecutó la suite, se capturó la evidencia del fallo (screenshot, video y trace) y finalmente se revirtió el cambio, confirmando que era un defecto simulado y no un bug real del sitio.
+
+| Campo | Valor |
+|---|---|
+| **Título** | El badge del carrito no incrementa a "2" tras agregar un solo producto |
+| **Severidad / Prioridad** | Media / Media |
+| **Resultado esperado** | `"2"` (valor forzado a propósito en el test) |
+| **Resultado obtenido** | `"1"` (comportamiento real y correcto del sitio) |
+| **Evidencia** | [`evidencias/clase07/DR-001-fallo-badge.png`](./evidencias/clase07/DR-001-fallo-badge.png) + video y trace generados automáticamente |
+| **Estado** | Cerrado — cambio revertido, test vuelve a pasar |
+
+📄 Reporte completo: **[reportes/DR-001.md](./reportes/DR-001.md)**
+
+<details>
+<summary><strong>📸 Evidencia del fallo simulado</strong></summary>
+
+<br>
+
+![Fallo simulado del badge](./evidencias/clase07/DR-001-fallo-badge.png)
+
+</details>
+
+---
+
 ## Evidencias destacadas
 
 La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
@@ -617,6 +771,9 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 03](./evidencias/clase03)
 - [Evidencias Clase 04](./evidencias/clase04)
 - [Evidencias Clase 06](./evidencias/clase06)
+- [Evidencias Clase 07](./evidencias/clase07)
+- [Baseline visual — Tarea 07](./tests/tarea07.spec.ts-snapshots)
+- [Reportes de defectos](./reportes)
 
 ---
 
@@ -631,13 +788,17 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase02/
 │   ├── clase03/
 │   ├── clase04/
-│   └── clase06/
+│   ├── clase06/
+│   └── clase07/
+│       └── DR-001-fallo-badge.png
 ├── pages/
 │   ├── LoginPage.ts
 │   ├── InventoryPage.ts
 │   ├── CartPage.ts
 │   ├── CheckoutPage.ts
 │   └── MenuPage.ts
+├── reportes/
+│   └── DR-001.md
 ├── tareas/
 │   └── tarea-04.md
 ├── tests/
@@ -645,7 +806,11 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase02.spec.ts
 │   ├── clase03.spec.ts
 │   ├── clase04.spec.ts
-│   └── clase06.spec.ts
+│   ├── clase06.spec.ts
+│   ├── clase07.spec.ts
+│   ├── tarea07.spec.ts
+│   └── tarea07.spec.ts-snapshots/
+│       └── inventario-baseline-chromium-win32.png
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -681,9 +846,12 @@ npx playwright show-report
 
 - [Caso de prueba TC-001](./casos-de-prueba/TC-001.md)
 - [Tarea 04](./tareas/tarea-04.md)
+- [Reporte de defecto DR-001](./reportes/DR-001.md)
 
 ---
 
 ## Conclusión
 
-Este proyecto evidencia la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, fortaleciendo la trazabilidad, la documentación y la validación funcional de una aplicación web real como DemoBlaze.
+Este proyecto evidencia la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, fortaleciendo la trazabilidad, la documentación y la validación funcional de aplicaciones web reales como DemoBlaze y Sauce Demo.
+
+A partir de la Clase 07, el proyecto suma una dimensión de **calidad profesional del proceso de pruebas**: evidencia completa y reproducible (screenshots, videos, trazas), técnicas avanzadas de reporte (`test.step()`, `testInfo.attach()`, `toHaveScreenshot()`) y documentación formal de defectos bajo la cadena causal Error → Defecto → Fallo — llevando el repositorio de "tests que pasan" a "tests que además comunican y documentan calidad".
