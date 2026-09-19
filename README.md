@@ -16,7 +16,7 @@ Carné: 1790-22-16429
 [![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-38%20passed-success)](#estado-de-los-laboratorios)
+[![Tests](https://img.shields.io/badge/Tests-45%20passed-success)](#estado-de-los-laboratorios)
 [![Defectos](https://img.shields.io/badge/Defectos%20documentados-1-orange)](#reporte-de-defecto--dr-001)
 [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
@@ -46,7 +46,10 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 | Clase 04 | Actions y flujo funcional | 7 | ✅ Completado |
 | Clase 06 | Page Object Model (POM) | 8 | ✅ Completado |
 | Clase 07 | Roles QA + Error/Defecto/Fallo + Evidencias avanzadas | 7 | ✅ Completado |
-| **Total** |  | **38** | **✅ Completado** |
+| Clase 08 | Hooks (`beforeEach`/`afterEach`) y suites avanzadas | 7 | ✅ Completado |
+| **Total** |  | **45** | **✅ Completado** |
+
+> Los tests reto de `tests/tarea07.spec.ts` y `tests/tarea08.spec.ts` se documentan dentro de cada laboratorio y no se suman al total anterior.
 
 ---
 
@@ -61,6 +64,7 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Laboratorio 06](#laboratorio-06--page-object-model-pom-en-sauce-demo)
 - [Laboratorio 07](#laboratorio-07--roles-qa--error-defecto-y-fallo--evidencias-avanzadas)
 - [Reporte de defecto DR-001](#reporte-de-defecto--dr-001)
+- [Laboratorio 08](#laboratorio-08--hooks-y-suites-avanzadas)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -762,6 +766,149 @@ Como parte del laboratorio se simuló un defecto real siguiendo el ciclo complet
 
 ---
 
+## Laboratorio 08 · Hooks y suites avanzadas
+
+> Objetivo: aplicar `beforeEach`/`afterEach` para automatizar el login y la evidencia de fallos, ejecutar suites en modo `parallel`, y validar comportamientos distintos según el tipo de usuario de SauceDemo.
+
+### Desarrollo del laboratorio
+
+Se creó `helpers/auth.ts` con la función `loginAs()` para centralizar el login y reutilizarlo en toda la suite. En `tests/clase08.spec.ts` los tests se organizaron en dos `describe` en modo `parallel`: uno con `beforeEach` (login automático antes de cada test) y `afterEach` (captura de screenshot solo si el test falla), y otro que compara el comportamiento de `standard_user` frente a `performance_glitch_user` (usuario con ~5s de delay artificial en el login).
+
+Como tarea de la clase, se agregaron 3 tests reto en `tests/tarea08.spec.ts` con técnicas de hooks/suites **no vistas en el laboratorio**: una suite `serial` con una página compartida creada en `beforeAll` (el modo `serial` por sí solo no comparte la `page` entre tests), `test.slow()` para triplicar el timeout de un test lento en vez de depender del margen del timeout global, y `test.skip()` evaluado dinámicamente en tiempo de ejecución, documentando la razón del skip.
+
+### Pruebas implementadas — `tests/clase08.spec.ts`
+
+| # | Prueba | Estado |
+|---|---|---|
+| 1 | El inventario muestra 6 productos | ✅ |
+| 2 | Todos los productos tienen precio visible | ✅ |
+| 3 | Todos los productos tienen imagen visible | ✅ |
+| 4 | El menú de hamburguesa funciona | ✅ |
+| 5 | Logout funciona correctamente | ✅ |
+| 6 | Usuario estándar puede completar el checkout | ✅ |
+| 7 | Usuario de rendimiento degradado experimenta lentitud | ✅ |
+
+### Tests reto — `tests/tarea08.spec.ts` (hooks y suites avanzados)
+
+| # | Reto | Técnica | Qué demuestra | Estado |
+|---|---|---|---|---|
+| 1 | Suite serial con página compartida | `test.describe.configure({ mode: 'serial' })` + `page` creada en `beforeAll` | Los 3 tests reutilizan la misma sesión/estado (login → agregar producto → verificar carrito) en vez de repetir el login en cada uno | ✅ |
+| 2 | `test.slow()` | `test.slow()` | Triplica el timeout del test del usuario con lentitud artificial (30 000 ms → 90 000 ms) en vez de depender del margen del timeout global | ✅ |
+| 3 | `test.skip()` dinámico | `test.skip(condición, razón)` | Evalúa en tiempo de ejecución si un producto existe en el catálogo y omite el test documentando la razón, en vez de fallar | ⏭️ Omitido a propósito |
+
+### Ejecutar laboratorio
+
+```bash
+# Tests del laboratorio (Clase 08)
+npx playwright test tests/clase08.spec.ts
+
+# Tests reto (Tarea 08)
+npx playwright test tests/tarea08.spec.ts
+```
+
+### Evidencias
+
+<details>
+<summary><strong>📸 Test 1 · Inventario con 6 productos</strong></summary>
+
+<br>
+
+![Inventario con 6 productos](./evidencias/clase08/test01/01-inventario-6-productos.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 2 · Precios en formato correcto</strong></summary>
+
+<br>
+
+![Precios en formato correcto](./evidencias/clase08/test02/02-precios-formato-correcto.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 3 · Imágenes de productos visibles</strong></summary>
+
+<br>
+
+![Imágenes visibles](./evidencias/clase08/test03/03-imagenes-visibles.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 4 · Menú de hamburguesa abierto</strong></summary>
+
+<br>
+
+![Menú de hamburguesa abierto](./evidencias/clase08/test04/04-menu-hamburguesa-abierto.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 5 · Logout exitoso</strong></summary>
+
+<br>
+
+![Logout exitoso](./evidencias/clase08/test05/05-logout-exitoso.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 6 · Checkout con usuario estándar</strong></summary>
+
+<br>
+
+![Checkout usuario estándar](./evidencias/clase08/test06/06-checkout-standard-user.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 7 · Inventario con usuario de rendimiento degradado</strong></summary>
+
+<br>
+
+![Inventario glitch user](./evidencias/clase08/test07/07-glitch-user-inventario.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 1 · Carrito con estado compartido (suite serial)</strong></summary>
+
+<br>
+
+![Carrito con estado compartido](./evidencias/clase08/tarea08-reto1/reto1-carrito-con-estado-compartido.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 2 · Usuario con lentitud artificial (test.slow())</strong></summary>
+
+<br>
+
+![Glitch user con test.slow()](./evidencias/clase08/tarea08-reto2/reto2-glitch-user-slow.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 3 · Inventario evaluado antes del skip dinámico</strong></summary>
+
+<br>
+
+![Inventario antes del skip](./evidencias/clase08/tarea08-reto3/reto3-inventario-antes-del-skip.png)
+
+</details>
+
+<details>
+<summary><strong>✅ Resultado general · 11 pruebas aprobadas, 1 omitida a propósito</strong></summary>
+
+<br>
+
+![Clase 08 y Tarea 08 - resultado general](./evidencias/clase08/resultado-general/reporte-playwright-clase08.png)
+
+</details>
+
+---
+
 ## Evidencias destacadas
 
 La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
@@ -772,6 +919,7 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 04](./evidencias/clase04)
 - [Evidencias Clase 06](./evidencias/clase06)
 - [Evidencias Clase 07](./evidencias/clase07)
+- [Evidencias Clase 08](./evidencias/clase08)
 - [Baseline visual — Tarea 07](./tests/tarea07.spec.ts-snapshots)
 - [Reportes de defectos](./reportes)
 
@@ -783,14 +931,22 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 QA-PLAYWRIGHT-CURSO
 ├── casos-de-prueba/
 │   └── TC-001.md
+├── documentos/
+│   └── sqa-plan-saucedemo.md
 ├── evidencias/
 │   ├── clase01/
 │   ├── clase02/
 │   ├── clase03/
 │   ├── clase04/
 │   ├── clase06/
-│   └── clase07/
-│       └── DR-001-fallo-badge.png
+│   ├── clase07/
+│   │   └── DR-001-fallo-badge.png
+│   └── clase08/
+│       ├── test01 … test07/
+│       ├── tarea08-reto1 … tarea08-reto3/
+│       └── resultado-general/
+├── helpers/
+│   └── auth.ts
 ├── pages/
 │   ├── LoginPage.ts
 │   ├── InventoryPage.ts
@@ -808,9 +964,11 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase04.spec.ts
 │   ├── clase06.spec.ts
 │   ├── clase07.spec.ts
+│   ├── clase08.spec.ts
 │   ├── tarea07.spec.ts
-│   └── tarea07.spec.ts-snapshots/
-│       └── inventario-baseline-chromium-win32.png
+│   ├── tarea07.spec.ts-snapshots/
+│   │   └── inventario-baseline-chromium-win32.png
+│   └── tarea08.spec.ts
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -847,6 +1005,7 @@ npx playwright show-report
 - [Caso de prueba TC-001](./casos-de-prueba/TC-001.md)
 - [Tarea 04](./tareas/tarea-04.md)
 - [Reporte de defecto DR-001](./reportes/DR-001.md)
+- [SQA Plan mínimo — Sauce Demo](./documentos/sqa-plan-saucedemo.md)
 
 ---
 
@@ -855,3 +1014,5 @@ npx playwright show-report
 Este proyecto evidencia la aplicación práctica de pruebas automatizadas con Playwright en un entorno académico, fortaleciendo la trazabilidad, la documentación y la validación funcional de aplicaciones web reales como DemoBlaze y Sauce Demo.
 
 A partir de la Clase 07, el proyecto suma una dimensión de **calidad profesional del proceso de pruebas**: evidencia completa y reproducible (screenshots, videos, trazas), técnicas avanzadas de reporte (`test.step()`, `testInfo.attach()`, `toHaveScreenshot()`) y documentación formal de defectos bajo la cadena causal Error → Defecto → Fallo — llevando el repositorio de "tests que pasan" a "tests que además comunican y documentan calidad".
+
+La Clase 08 incorpora, además, control estructural de la ejecución con hooks (`beforeEach`/`afterEach`, `beforeAll`/`afterAll`), suites en modo `parallel` y `serial`, y ajustes dinámicos por test (`test.slow()`, `test.skip()` condicional) — junto con un SQA Plan mínimo que documenta propósito, alcance, herramientas y criterios de salida del proyecto.
