@@ -16,7 +16,7 @@ Carné: 1790-22-16429
 [![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-45%20passed-success)](#estado-de-los-laboratorios)
+[![Tests](https://img.shields.io/badge/Tests-54%20passed-success)](#estado-de-los-laboratorios)
 [![Defectos](https://img.shields.io/badge/Defectos%20documentados-1-orange)](#reporte-de-defecto--dr-001)
 [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
@@ -47,9 +47,10 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 | Clase 06 | Page Object Model (POM) | 8 | ✅ Completado |
 | Clase 07 | Roles QA + Error/Defecto/Fallo + Evidencias avanzadas | 7 | ✅ Completado |
 | Clase 08 | Hooks (`beforeEach`/`afterEach`) y suites avanzadas | 7 | ✅ Completado |
-| **Total** |  | **45** | **✅ Completado** |
+| Clase 09 | Fixtures y tests parametrizados | 9 | ✅ Completado |
+| **Total** | | **54** | **✅ Completado** |
 
-> Los tests reto de `tests/tarea07.spec.ts` y `tests/tarea08.spec.ts` se documentan dentro de cada laboratorio y no se suman al total anterior.
+> Los tests reto de `tests/tarea07.spec.ts`, `tests/tarea08.spec.ts` y `tests/tarea09.spec.ts` se documentan dentro de cada laboratorio y no se suman al total anterior.
 
 ---
 
@@ -65,6 +66,7 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Laboratorio 07](#laboratorio-07--roles-qa--error-defecto-y-fallo--evidencias-avanzadas)
 - [Reporte de defecto DR-001](#reporte-de-defecto--dr-001)
 - [Laboratorio 08](#laboratorio-08--hooks-y-suites-avanzadas)
+- [Laboratorio 09](#laboratorio-09--fixtures-y-tests-parametrizados)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -909,6 +911,150 @@ npx playwright test tests/tarea08.spec.ts
 
 ---
 
+## Laboratorio 09 · Fixtures y tests parametrizados
+
+> Objetivo: compartir configuración y estado entre tests mediante fixtures de Playwright (`base.extend`), y cubrir varios escenarios con un solo bloque de código usando datos de prueba y tests parametrizados.
+
+### Desarrollo del laboratorio
+
+Se creó `fixtures/index.ts` con tres fixtures que reutilizan los Page Objects existentes: `loginPage` (página de login lista para usar), `inventoryPage` (ya autenticada como `standard_user`) y `cartPage` (con 1 producto agregado y el carrito abierto). En `cartPage` se espera explícitamente a que el ítem sea visible antes de entregar el fixture, porque `getItemCount()` usa `.count()`, que **no** espera automáticamente (a diferencia de `expect()`).
+
+En `tests/clase09.spec.ts` se consumen los fixtures y se parametrizan dos escenarios con un `for` sobre arrays de datos: el login con tres usuarios representativos (válido, bloqueado y campos vacíos — no solo el camino feliz) y el agregado al carrito de tres productos distintos.
+
+Como tarea de la clase, `tests/tarea09.spec.ts` incorpora 3 retos con técnicas de fixtures **no vistas en el laboratorio**: teardown real (código posterior a `use()`), fixture con alcance `worker` y `test.use({ viewport })` combinado con parametrización.
+
+> Nivel en la pirámide de automatización: todos los tests del curso son **E2E** (punta de la pirámide); no se escriben pruebas unitarias ni de integración porque se prueban aplicaciones ya desplegadas.
+
+### Pruebas implementadas — `tests/clase09.spec.ts`
+
+| # | Prueba | Técnica | Estado |
+|---|---|---|---|
+| 1 | Usando fixture de login: verificar inventario | Fixture `inventoryPage` | ✅ |
+| 2 | Usando fixture de carrito: verificar que hay 1 item | Fixture `cartPage` | ✅ |
+| 3 | Usando fixture de loginPage: login manual en el test | Fixture `loginPage` | ✅ |
+| 4 | Login: usuario estándar puede ingresar | Parametrizado (`usuariosDeLogin`) | ✅ |
+| 5 | Login: usuario bloqueado no puede ingresar | Parametrizado (`usuariosDeLogin`) | ✅ |
+| 6 | Login: campos vacíos muestran error | Parametrizado (`usuariosDeLogin`) | ✅ |
+| 7 | Agregar "Sauce Labs Backpack" al carrito | Parametrizado (`productosAVerificar`) | ✅ |
+| 8 | Agregar "Sauce Labs Bike Light" al carrito | Parametrizado (`productosAVerificar`) | ✅ |
+| 9 | Agregar "Sauce Labs Bolt T-Shirt" al carrito | Parametrizado (`productosAVerificar`) | ✅ |
+
+### Tests reto — `tests/tarea09.spec.ts` (fixtures avanzados)
+
+| # | Reto | Técnica | Qué demuestra | Estado |
+|---|---|---|---|---|
+| 1 | Fixture con teardown real | Código después de `use()` | El setup arranca un cronómetro y el teardown, que corre al terminar el test (verificado también cuando el test falla), imprime cuánto tardó | ✅ |
+| 2 | Fixture de alcance worker | `[fn, { scope: 'worker' }]` + modo `serial` | El estado del fixture persiste entre tests del mismo worker: un contador sube de 1 a 2 | ✅ |
+| 3 | `test.use()` + parametrización | `test.use({ viewport })` dentro de un `for` | El mismo test corre en viewport móvil (375×667) y de escritorio (1280×720) | ✅ (2 tests) |
+
+### Reflexión y discusión (Paso 4)
+
+1. **¿Cuántas líneas se ahorran con el loop?** Sin parametrización habría que escribir 6 bloques `test()` casi idénticos (3 de login y 3 de producto) de ~10 líneas cada uno; con los dos `for` quedan 2 bloques, por lo que se ahorran más de 30 líneas y los cambios futuros se hacen en un solo lugar.
+2. **¿Qué pasa si se agrega un 4.º usuario a `usuariosDeLogin`?** El loop genera automáticamente un cuarto test, sin tocar el cuerpo del test.
+3. **¿Cómo leer los datos desde un CSV externo?** Leyendo el archivo con `fs.readFileSync` y convirtiéndolo a un arreglo de objetos (por ejemplo con `csv-parse`) al inicio del spec, antes del `for`, ya que los tests se generan al cargar el archivo.
+
+### Ejecutar laboratorio
+
+```bash
+# Tests del laboratorio (Clase 09) - reporter de lista
+npx playwright test tests/clase09.spec.ts --reporter=list
+
+# Tests reto (Tarea 09)
+npx playwright test tests/tarea09.spec.ts
+
+# Ambos, con 5 workers en paralelo
+npx playwright test tests/clase09.spec.ts tests/tarea09.spec.ts --workers=5
+
+# Reporte HTML
+npx playwright show-report
+```
+
+### Evidencias
+
+<details>
+<summary><strong>📸 Test 1 · Fixture inventoryPage</strong></summary>
+
+<br>
+
+![Inventario vía fixture](./evidencias/clase09/test01-fixture-inventario/01-inventario-via-fixture.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 2 · Fixture cartPage</strong></summary>
+
+<br>
+
+![Carrito vía fixture](./evidencias/clase09/test02-fixture-carrito/02-carrito-via-fixture.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Test 3 · Fixture loginPage con login manual</strong></summary>
+
+<br>
+
+![Login manual vía fixture](./evidencias/clase09/test03-fixture-loginpage/03-login-manual-via-fixture.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Tests 4-6 · Login parametrizado (estándar, bloqueado, campos vacíos)</strong></summary>
+
+<br>
+
+![Usuario estándar](./evidencias/clase09/test04-login-parametrizado/04a-usuario-estandar.png)
+
+![Usuario bloqueado](./evidencias/clase09/test04-login-parametrizado/04b-usuario-bloqueado.png)
+
+![Campos vacíos](./evidencias/clase09/test04-login-parametrizado/04c-campos-vacios.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Tests 7-9 · Productos parametrizados en el carrito</strong></summary>
+
+<br>
+
+![Sauce Labs Backpack](./evidencias/clase09/test05-productos-parametrizado/sauce-labs-backpack.png)
+
+![Sauce Labs Bike Light](./evidencias/clase09/test05-productos-parametrizado/sauce-labs-bike-light.png)
+
+![Sauce Labs Bolt T-Shirt](./evidencias/clase09/test05-productos-parametrizado/sauce-labs-bolt-t-shirt.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 1 · Fixture con teardown</strong></summary>
+
+<br>
+
+![Reto 1 - inventario con cronómetro](./evidencias/clase09/tarea09-reto1/reto1-inventario-con-cronometro.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 3 · Viewport móvil y escritorio</strong></summary>
+
+<br>
+
+![Viewport móvil](./evidencias/clase09/tarea09-reto3/reto3-inventario-movil.png)
+
+![Viewport escritorio](./evidencias/clase09/tarea09-reto3/reto3-inventario-escritorio.png)
+
+</details>
+
+<details>
+<summary><strong>✅ Resultado general · 14 pruebas aprobadas (9 del laboratorio + 5 de los retos)</strong></summary>
+
+<br>
+
+![Clase 09 y Tarea 09 - resultado general](./evidencias/clase09/resultado-general/reporte-playwright-clase09.png)
+
+</details>
+
+---
+
 ## Evidencias destacadas
 
 La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
@@ -920,6 +1066,7 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 06](./evidencias/clase06)
 - [Evidencias Clase 07](./evidencias/clase07)
 - [Evidencias Clase 08](./evidencias/clase08)
+- [Evidencias Clase 09](./evidencias/clase09)
 - [Baseline visual — Tarea 07](./tests/tarea07.spec.ts-snapshots)
 - [Reportes de defectos](./reportes)
 
@@ -941,10 +1088,16 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase06/
 │   ├── clase07/
 │   │   └── DR-001-fallo-badge.png
-│   └── clase08/
-│       ├── test01 … test07/
-│       ├── tarea08-reto1 … tarea08-reto3/
+│   ├── clase08/
+│   │   ├── test01 … test07/
+│   │   ├── tarea08-reto1 … tarea08-reto3/
+│   │   └── resultado-general/
+│   └── clase09/
+│       ├── test01 … test05/
+│       ├── tarea09-reto1, tarea09-reto3/
 │       └── resultado-general/
+├── fixtures/
+│   └── index.ts
 ├── helpers/
 │   └── auth.ts
 ├── pages/
@@ -965,10 +1118,12 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase06.spec.ts
 │   ├── clase07.spec.ts
 │   ├── clase08.spec.ts
+│   ├── clase09.spec.ts
 │   ├── tarea07.spec.ts
 │   ├── tarea07.spec.ts-snapshots/
 │   │   └── inventario-baseline-chromium-win32.png
-│   └── tarea08.spec.ts
+│   ├── tarea08.spec.ts
+│   └── tarea09.spec.ts
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -1016,3 +1171,5 @@ Este proyecto evidencia la aplicación práctica de pruebas automatizadas con Pl
 A partir de la Clase 07, el proyecto suma una dimensión de **calidad profesional del proceso de pruebas**: evidencia completa y reproducible (screenshots, videos, trazas), técnicas avanzadas de reporte (`test.step()`, `testInfo.attach()`, `toHaveScreenshot()`) y documentación formal de defectos bajo la cadena causal Error → Defecto → Fallo — llevando el repositorio de "tests que pasan" a "tests que además comunican y documentan calidad".
 
 La Clase 08 incorpora, además, control estructural de la ejecución con hooks (`beforeEach`/`afterEach`, `beforeAll`/`afterAll`), suites en modo `parallel` y `serial`, y ajustes dinámicos por test (`test.slow()`, `test.skip()` condicional) — junto con un SQA Plan mínimo que documenta propósito, alcance, herramientas y criterios de salida del proyecto.
+
+La Clase 09 cierra el módulo con **reutilización y cobertura de datos**: fixtures propios (`base.extend`) que encapsulan el estado previo de cada test —incluyendo teardown y alcance `worker`— y tests parametrizados que multiplican los escenarios cubiertos (usuarios válidos, bloqueados, campos vacíos, distintos productos y viewports) sin duplicar código.
