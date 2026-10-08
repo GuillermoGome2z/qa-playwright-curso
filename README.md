@@ -16,7 +16,7 @@ Carné: 1790-22-16429
 [![Playwright](https://img.shields.io/badge/Playwright-Automation-45BA4B?logo=playwright)](https://playwright.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Enabled-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-v24.18.0-339933?logo=node.js)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-54%20passed-success)](#estado-de-los-laboratorios)
+[![Tests](https://img.shields.io/badge/Tests-64%20passed-success)](#estado-de-los-laboratorios)
 [![Defectos](https://img.shields.io/badge/Defectos%20documentados-1-orange)](#reporte-de-defecto--dr-001)
 [![GitHub](https://img.shields.io/badge/GitHub-Repositorio-181717?logo=github)](https://github.com/)
 
@@ -48,9 +48,10 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 | Clase 07 | Roles QA + Error/Defecto/Fallo + Evidencias avanzadas | 7 | ✅ Completado |
 | Clase 08 | Hooks (`beforeEach`/`afterEach`) y suites avanzadas | 7 | ✅ Completado |
 | Clase 09 | Fixtures y tests parametrizados | 9 | ✅ Completado |
-| **Total** | | **54** | **✅ Completado** |
+| Clase 10 | Multi-browser y tags (smoke / regression) | 10 | ✅ Completado |
+| **Total** | | **64** | **✅ Completado** |
 
-> Los tests reto de `tests/tarea07.spec.ts`, `tests/tarea08.spec.ts` y `tests/tarea09.spec.ts` se documentan dentro de cada laboratorio y no se suman al total anterior.
+> Los tests reto de `tests/tarea07.spec.ts`, `tests/tarea08.spec.ts`, `tests/tarea09.spec.ts` y `tests/tarea10.spec.ts` se documentan dentro de cada laboratorio y no se suman al total anterior.
 
 ---
 
@@ -67,6 +68,7 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Reporte de defecto DR-001](#reporte-de-defecto--dr-001)
 - [Laboratorio 08](#laboratorio-08--hooks-y-suites-avanzadas)
 - [Laboratorio 09](#laboratorio-09--fixtures-y-tests-parametrizados)
+- [Laboratorio 10](#laboratorio-10--multi-browser-y-tags)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -83,7 +85,7 @@ El proyecto fue desarrollado con un conjunto de herramientas orientadas a la aut
 | Playwright | Automatización de pruebas end-to-end |
 | TypeScript | Desarrollo de los tests |
 | Node.js | Entorno de ejecución |
-| Chromium | Navegador utilizado para las pruebas |
+| Chromium, Firefox y WebKit | Navegadores utilizados para las pruebas (desde la Clase 10 también emulación móvil: Pixel 5 y iPhone 12) |
 | Playwright Trace Viewer | Depuración visual paso a paso (timeline, screenshots, red, consola) |
 | ISO/IEC 25010 | Marco de referencia para atributos de calidad del software |
 | Git | Control de versiones |
@@ -1055,6 +1057,193 @@ npx playwright show-report
 
 ---
 
+## Laboratorio 10 · Multi-browser y tags
+
+> Objetivo: ejecutar la misma suite en los 3 motores de renderizado (Blink, Gecko y WebKit) y en dispositivos móviles emulados, y organizar los tests en subconjuntos (smoke y regression) mediante tags.
+
+### Desarrollo del laboratorio
+
+Se actualizó `playwright.config.ts` con 5 projects: `chromium`, `firefox`, `webkit`, `mobile-chrome` (Pixel 5) y `mobile-safari` (iPhone 12), con `workers: 1` para ejecutar un navegador a la vez. Se conserva el `baseURL` de DemoBlaze porque las Clases 01-04 lo necesitan; los tests de Sauce Demo usan la URL completa.
+
+Se crearon dos suites sobre Sauce Demo:
+
+- `tests/clase10-smoke.spec.ts`: 5 tests `@smoke` que verifican lo mínimo para que el sistema "arranque" (login, inventario, carrito y checkout).
+- `tests/clase10-regression.spec.ts`: 5 tests `@regression` que verifican que funcionalidades existentes (ordenamiento, botón Add/Remove, detalle de producto) sigan funcionando después de cualquier cambio.
+
+Como tarea de la clase, `tests/tarea10.spec.ts` incorpora 3 retos con técnicas **no vistas en el laboratorio**: tags múltiples con `--grep-invert`, `expect.soft()` y el fixture `browserName`.
+
+> Nota: con `headless: false` (como en el ejemplo de clase) los tests que hacen login fallaban **solo en Firefox** por timeout al hacer click en el botón Login. En `headless: true` los 5 projects pasan, por lo que el config quedó en headless.
+
+### Pruebas implementadas — `tests/clase10-smoke.spec.ts`
+
+| # | Prueba | Tag | Estado |
+|---|---|---|---|
+| 1 | La página de login carga | `@smoke` | ✅ |
+| 2 | Login con usuario estándar funciona | `@smoke` | ✅ |
+| 3 | El inventario muestra productos | `@smoke` | ✅ |
+| 4 | El carrito es accesible | `@smoke` | ✅ |
+| 5 | El checkout inicia correctamente | `@smoke` | ✅ |
+
+### Pruebas implementadas — `tests/clase10-regression.spec.ts`
+
+| # | Prueba | Tag | Estado |
+|---|---|---|---|
+| 1 | Ordenamiento A-Z funciona | `@regression` | ✅ |
+| 2 | Ordenamiento Z-A funciona | `@regression` | ✅ |
+| 3 | Precio de menor a mayor funciona | `@regression` | ✅ |
+| 4 | El botón "Remove" aparece después de agregar al carrito | `@regression` | ✅ |
+| 5 | Navegar al detalle del producto y regresar | `@regression` | ✅ |
+
+### Tests reto — `tests/tarea10.spec.ts` (tags, soft assertions y cross-browser)
+
+| # | Reto | Técnica | Qué demuestra | Estado |
+|---|---|---|---|---|
+| 1 | Tags múltiples + `--grep-invert` | `{ tag: ['@regression', '@ui'] }` | 3 tests con combinaciones de tags (`@ui`, `@carrito`, `@funcional`) que se pueden incluir con `--grep` y excluir con `--grep-invert` | ✅ (3 tests) |
+| 2 | `expect.soft()` | `expect.soft()` + `testInfo.errors` | Se validan 6 atributos de "Sauce Labs Backpack" (nombre, precio, descripción, imagen, `alt` y botón) sin detenerse en el primer fallo; al final se listan los errores acumulados | ✅ |
+| 3 | Fixture `browserName` | `async ({ page, browserName })` | La aserción del user agent se ajusta según el motor real (chromium / firefox / webkit) en lugar de saltar el test con `test.skip()` | ✅ |
+
+### Reflexión y discusión (Paso 4)
+
+1. **¿Algún test se comportó diferente en WebKit vs. Chrome?** Los resultados funcionales fueron iguales en los 5 projects (75/75 en headless). La diferencia apareció en Firefox: en modo `headless: false` el click en Login se quedaba esperando hasta el timeout, mientras que Chromium y WebKit pasaban. Esto ocurre porque cada motor implementa de forma distinta el manejo de eventos, la navegación y los tiempos de renderizado, y la integración con la ventana del sistema operativo también cambia; por eso un mismo test puede comportarse diferente según el navegador.
+2. **¿Cuántos tests se ejecutaron con la configuración de 5 projects?** Los 10 tests del laboratorio (5 smoke + 5 regression) × 5 projects = **50 ejecuciones**. Sumando los 5 tests de la tarea: 15 × 5 = **75 ejecuciones**.
+3. **¿Por qué el smoke debe ejecutarse antes del regression en CI/CD?** Porque el smoke verifica en pocos segundos que lo básico funciona (la app carga, el login funciona). Si falla, el build está roto y no tiene sentido gastar tiempo y recursos corriendo la regresión completa; se detiene el pipeline y se reporta de inmediato.
+
+### Ejecutar laboratorio
+
+```bash
+# Laboratorio completo en los 5 projects (50 ejecuciones)
+npx playwright test tests/clase10-smoke.spec.ts tests/clase10-regression.spec.ts
+
+# Solo por tag
+npx playwright test --grep "@smoke"
+npx playwright test --grep "@regression"
+
+# Solo un navegador / dispositivo
+npx playwright test tests/clase10-smoke.spec.ts --project=firefox
+npx playwright test --project=mobile-chrome --grep "@smoke"
+
+# Laboratorio + Tarea 10 (15 tests × 5 projects = 75 ejecuciones)
+npx playwright test tests/clase10-smoke.spec.ts tests/clase10-regression.spec.ts tests/tarea10.spec.ts
+
+# Reto 1: incluir y excluir con tags
+npx playwright test tests/tarea10.spec.ts --grep "@regression" --grep-invert "@ui"
+npx playwright test tests/tarea10.spec.ts --grep-invert "@carrito"
+
+# Reporte HTML
+npx playwright show-report
+```
+
+### Evidencias
+
+Cada test guarda una captura por project (`<nombre>-<project>.png`). Abajo se muestran las de `chromium`; las de los otros 4 projects están en las carpetas [smoke](./evidencias/clase10/smoke) y [regression](./evidencias/clase10/regression).
+
+<details>
+<summary><strong>📸 Smoke · 5 tests @smoke (chromium)</strong></summary>
+
+<br>
+
+![Smoke 1 - Login carga](./evidencias/clase10/smoke/01-login-carga-chromium.png)
+
+![Smoke 2 - Login estándar](./evidencias/clase10/smoke/02-login-estandar-chromium.png)
+
+![Smoke 3 - Inventario con productos](./evidencias/clase10/smoke/03-inventario-productos-chromium.png)
+
+![Smoke 4 - Carrito accesible](./evidencias/clase10/smoke/04-carrito-accesible-chromium.png)
+
+![Smoke 5 - Checkout inicia](./evidencias/clase10/smoke/05-checkout-inicia-chromium.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Regression · 5 tests @regression (chromium)</strong></summary>
+
+<br>
+
+![Regression 1 - Orden A-Z](./evidencias/clase10/regression/01-orden-a-z-chromium.png)
+
+![Regression 2 - Orden Z-A](./evidencias/clase10/regression/02-orden-z-a-chromium.png)
+
+![Regression 3 - Precio menor a mayor](./evidencias/clase10/regression/03-precio-menor-mayor-chromium.png)
+
+![Regression 4 - Botón Remove](./evidencias/clase10/regression/04-boton-remove-chromium.png)
+
+![Regression 5 - Detalle de producto](./evidencias/clase10/regression/05-detalle-producto-chromium.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Smoke en móvil · mobile-chrome y mobile-safari</strong></summary>
+
+<br>
+
+![Smoke inventario - mobile-chrome](./evidencias/clase10/smoke/03-inventario-productos-mobile-chrome.png)
+
+![Smoke inventario - mobile-safari](./evidencias/clase10/smoke/03-inventario-productos-mobile-safari.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 1 · Tags múltiples (inventario en los 5 projects)</strong></summary>
+
+<br>
+
+![Reto 1 - chromium](./evidencias/clase10/tarea10-reto1/reto1-ui-chromium.png)
+
+![Reto 1 - firefox](./evidencias/clase10/tarea10-reto1/reto1-ui-firefox.png)
+
+![Reto 1 - webkit](./evidencias/clase10/tarea10-reto1/reto1-ui-webkit.png)
+
+![Reto 1 - mobile-chrome](./evidencias/clase10/tarea10-reto1/reto1-ui-mobile-chrome.png)
+
+![Reto 1 - mobile-safari](./evidencias/clase10/tarea10-reto1/reto1-ui-mobile-safari.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 2 · expect.soft() sobre Sauce Labs Backpack</strong></summary>
+
+<br>
+
+![Reto 2 - chromium](./evidencias/clase10/tarea10-reto2/reto2-backpack-chromium.png)
+
+![Reto 2 - firefox](./evidencias/clase10/tarea10-reto2/reto2-backpack-firefox.png)
+
+![Reto 2 - webkit](./evidencias/clase10/tarea10-reto2/reto2-backpack-webkit.png)
+
+![Reto 2 - mobile-chrome](./evidencias/clase10/tarea10-reto2/reto2-backpack-mobile-chrome.png)
+
+![Reto 2 - mobile-safari](./evidencias/clase10/tarea10-reto2/reto2-backpack-mobile-safari.png)
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 3 · Fixture browserName en cada motor</strong></summary>
+
+<br>
+
+![Reto 3 - chromium](./evidencias/clase10/tarea10-reto3/reto3-chromium.png)
+
+![Reto 3 - firefox](./evidencias/clase10/tarea10-reto3/reto3-firefox.png)
+
+![Reto 3 - webkit](./evidencias/clase10/tarea10-reto3/reto3-webkit.png)
+
+![Reto 3 - mobile-chrome](./evidencias/clase10/tarea10-reto3/reto3-mobile-chrome.png)
+
+![Reto 3 - mobile-safari](./evidencias/clase10/tarea10-reto3/reto3-mobile-safari.png)
+
+</details>
+
+<details>
+<summary><strong>✅ Resultado general · 75 ejecuciones aprobadas (15 tests × 5 projects)</strong></summary>
+
+<br>
+
+![Clase 10 y Tarea 10 - reporte HTML multi-browser](./evidencias/clase10/resultado-general/reporte-multi-browser.png)
+
+</details>
+
+---
+
 ## Evidencias destacadas
 
 La organización de las capturas se realizó de forma estructurada por clase y por prueba, con el propósito de conservar de manera ordenada las evidencias generadas durante la ejecución de cada laboratorio.
@@ -1067,6 +1256,7 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 07](./evidencias/clase07)
 - [Evidencias Clase 08](./evidencias/clase08)
 - [Evidencias Clase 09](./evidencias/clase09)
+- [Evidencias Clase 10](./evidencias/clase10)
 - [Baseline visual — Tarea 07](./tests/tarea07.spec.ts-snapshots)
 - [Reportes de defectos](./reportes)
 
@@ -1092,9 +1282,14 @@ QA-PLAYWRIGHT-CURSO
 │   │   ├── test01 … test07/
 │   │   ├── tarea08-reto1 … tarea08-reto3/
 │   │   └── resultado-general/
-│   └── clase09/
-│       ├── test01 … test05/
-│       ├── tarea09-reto1, tarea09-reto3/
+│   ├── clase09/
+│   │   ├── test01 … test05/
+│   │   ├── tarea09-reto1, tarea09-reto3/
+│   │   └── resultado-general/
+│   └── clase10/
+│       ├── smoke/
+│       ├── regression/
+│       ├── tarea10-reto1 … tarea10-reto3/
 │       └── resultado-general/
 ├── fixtures/
 │   └── index.ts
@@ -1119,11 +1314,14 @@ QA-PLAYWRIGHT-CURSO
 │   ├── clase07.spec.ts
 │   ├── clase08.spec.ts
 │   ├── clase09.spec.ts
+│   ├── clase10-smoke.spec.ts
+│   ├── clase10-regression.spec.ts
 │   ├── tarea07.spec.ts
 │   ├── tarea07.spec.ts-snapshots/
 │   │   └── inventario-baseline-chromium-win32.png
 │   ├── tarea08.spec.ts
-│   └── tarea09.spec.ts
+│   ├── tarea09.spec.ts
+│   └── tarea10.spec.ts
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -1138,7 +1336,7 @@ QA-PLAYWRIGHT-CURSO
 
 ```bash
 npm install
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 ```
 
 ### Ejecutar todas las pruebas
@@ -1173,3 +1371,5 @@ A partir de la Clase 07, el proyecto suma una dimensión de **calidad profesiona
 La Clase 08 incorpora, además, control estructural de la ejecución con hooks (`beforeEach`/`afterEach`, `beforeAll`/`afterAll`), suites en modo `parallel` y `serial`, y ajustes dinámicos por test (`test.slow()`, `test.skip()` condicional) — junto con un SQA Plan mínimo que documenta propósito, alcance, herramientas y criterios de salida del proyecto.
 
 La Clase 09 cierra el módulo con **reutilización y cobertura de datos**: fixtures propios (`base.extend`) que encapsulan el estado previo de cada test —incluyendo teardown y alcance `worker`— y tests parametrizados que multiplican los escenarios cubiertos (usuarios válidos, bloqueados, campos vacíos, distintos productos y viewports) sin duplicar código.
+
+La Clase 10 lleva la suite a un escenario más cercano a producción: **ejecución cross-browser** en los 3 motores (Blink, Gecko y WebKit) y en dispositivos móviles emulados, y **organización por tags** (`@smoke`, `@regression`) para correr subconjuntos según la necesidad — smoke primero como filtro rápido y regresión completa después — junto con `expect.soft()` para reportar todos los fallos de una validación en una sola corrida.
