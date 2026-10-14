@@ -69,6 +69,7 @@ La siguiente tabla resume el alcance de los laboratorios implementados y su esta
 - [Laboratorio 08](#laboratorio-08--hooks-y-suites-avanzadas)
 - [Laboratorio 09](#laboratorio-09--fixtures-y-tests-parametrizados)
 - [Laboratorio 10](#laboratorio-10--multi-browser-y-tags)
+- [Tarea 11](#tarea-11--técnicas-para-documentar-defectos)
 - [Evidencias](#evidencias-destacadas)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Ejecución](#ejecución)
@@ -1257,6 +1258,7 @@ La organización de las capturas se realizó de forma estructurada por clase y p
 - [Evidencias Clase 08](./evidencias/clase08)
 - [Evidencias Clase 09](./evidencias/clase09)
 - [Evidencias Clase 10](./evidencias/clase10)
+- [Evidencias Tarea 11](./evidencias/clase11)
 - [Baseline visual — Tarea 07](./tests/tarea07.spec.ts-snapshots)
 - [Reportes de defectos](./reportes)
 
@@ -1302,7 +1304,8 @@ QA-PLAYWRIGHT-CURSO
 │   ├── CheckoutPage.ts
 │   └── MenuPage.ts
 ├── reportes/
-│   └── DR-001.md
+│   ├── DR-001.md
+│   └── bug-report-clase11.md
 ├── tareas/
 │   └── tarea-04.md
 ├── tests/
@@ -1321,7 +1324,9 @@ QA-PLAYWRIGHT-CURSO
 │   │   └── inventario-baseline-chromium-win32.png
 │   ├── tarea08.spec.ts
 │   ├── tarea09.spec.ts
-│   └── tarea10.spec.ts
+│   ├── tarea10.spec.ts
+│   ├── clase11.spec.ts
+│   └── tarea11.spec.ts
 ├── package.json
 ├── playwright.config.ts
 ├── README.md
@@ -1353,11 +1358,91 @@ npx playwright show-report
 
 ---
 
+## Tarea 11 · Técnicas para documentar defectos
+
+La tarea está implementada en [`tests/tarea11.spec.ts`](./tests/tarea11.spec.ts) sobre
+Practice Test Automation. Incluye tres retos:
+
+| # | Reto | Técnica | Resultado |
+|---|---|---|---|
+| 1 | Medir un defecto intermitente en `/typos` | 12 recargas, `testInfo.attach()` y anotación `bug` | ✅ |
+| 2 | Mantener documentado el defecto de texto | `test.fixme()` y anotación `issue` | ⏭️ omitido intencionalmente |
+| 3 | Generar un borrador de reporte desde `afterEach` | Adjuntar Markdown cuando un test termina inesperadamente | ✅ |
+
+### Ejecutar la tarea
+
+```bash
+# Resultado esperado: 2 passed, 1 skipped
+npx playwright test tests/tarea11.spec.ts --project=firefox
+
+# Ver los adjuntos y anotaciones
+npx playwright show-report
+```
+
+El Reto 1 mide cuántas veces aparece el texto defectuoso `won,t` durante 12
+recargas y adjunta la frecuencia obtenida. El Reto 2 permanece omitido mientras
+el defecto siga abierto. El `afterEach` de la suite genera un borrador
+`borrador-reporte.md` si cualquier test termina con un error inesperado.
+
+---
+
+### Evidencias de la Tarea 11
+
+La ejecución se realizó en Firefox y generó dos capturas locales, además de los
+adjuntos de frecuencia y anotaciones visibles en el reporte HTML.
+
+<details>
+<summary><strong>📸 Reto 1 · Frecuencia del defecto intermitente</strong></summary>
+
+<br>
+
+![Reto 1 - página Typos](./evidencias/clase11/tarea11-reto1-typos-firefox.png)
+
+El test recargó `/typos` 12 veces y adjuntó el resultado de la frecuencia en
+`frecuencia-defecto-typos.txt`.
+
+</details>
+
+<details>
+<summary><strong>⏭️ Reto 2 · Test omitido por defecto conocido</strong></summary>
+
+<br>
+
+El test de texto correcto permanece omitido con `test.fixme()` mientras el
+defecto intermitente siga abierto. La anotación `issue` queda disponible en el
+reporte HTML.
+
+</details>
+
+<details>
+<summary><strong>📸 Reto 3 · Página de imágenes rotas</strong></summary>
+
+<br>
+
+![Reto 3 - imágenes rotas](./evidencias/clase11/tarea11-reto3-broken-images-firefox.png)
+
+</details>
+
+<details>
+<summary><strong>✅ Resultado general · 2 pruebas aprobadas y 1 omitida</strong></summary>
+
+<br>
+
+```text
+2 passed
+1 skipped
+```
+
+</details>
+
+---
+
 ## Documentación adicional
 
 - [Caso de prueba TC-001](./casos-de-prueba/TC-001.md)
 - [Tarea 04](./tareas/tarea-04.md)
 - [Reporte de defecto DR-001](./reportes/DR-001.md)
+- [Reporte de defecto de la Clase 11](./reportes/bug-report-clase11.md)
 - [SQA Plan mínimo — Sauce Demo](./documentos/sqa-plan-saucedemo.md)
 
 ---
