@@ -1443,6 +1443,7 @@ reporte HTML.
 - [Tarea 04](./tareas/tarea-04.md)
 - [Reporte de defecto DR-001](./reportes/DR-001.md)
 - [Reporte de defecto de la Clase 11](./reportes/bug-report-clase11.md)
+- [Issue #1 — Clase 11: dos imágenes no cargan (404)](https://github.com/GuillermoGome2z/qa-playwright-curso/issues/1)
 - [SQA Plan mínimo — Sauce Demo](./documentos/sqa-plan-saucedemo.md)
 
 ---
